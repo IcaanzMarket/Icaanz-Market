@@ -1,198 +1,227 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ICAANZ MARKET</title>
+    <title>STOCK AKUN ICAANZ</title>
     <style>
-        :root {
-            --primary-color: #1a73e8;
-            --secondary-color: #4285f4;
-            --dark-blue: #0d47a1;
-            --light-blue: #e8f0fe;
-            --white: #ffffff;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-        
-        * {
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: var(--light-blue);
+            background-color: #f5f9ff;
             color: #333;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
         }
         
         header {
+            background-color: #1a73e8;
+            color: white;
             text-align: center;
-            margin-bottom: 30px;
-            animation: fadeIn 1s ease;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
-        .logo {
-            max-width: 200px;
-            height: auto;
-            margin-bottom: 20px;
-            border-radius: 50%;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-        
-        .logo:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        h1, h2 {
+            margin: 0;
         }
         
         h1 {
-            color: var(--dark-blue);
-            margin-bottom: 10px;
-            font-size: 2.5rem;
+            font-size: 28px;
         }
         
-        .subtitle {
-            color: var(--primary-color);
-            font-size: 1.2rem;
-            margin-bottom: 30px;
+        h2 {
+            font-size: 22px;
+            color: #1a73e8;
+            margin-bottom: 20px;
         }
         
-        .button-container {
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .products {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
         }
         
-        .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px 20px;
-            background-color: var(--primary-color);
-            color: var(--white);
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        
+        .product-info {
+            padding: 15px;
+        }
+        
+        .product-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1a73e8;
+            margin: 10px 0;
+        }
+        
+        .testimonial-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .testimonial-button {
+            display: inline-block;
+            background-color: #1a73e8;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .testimonial-button:hover {
+            background-color: #0d5bba;
+            transform: scale(1.05);
+        }
+        
+        .whatsapp-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            left: 30px;
+            background-color: #25D366;
+            color: white;
             text-align: center;
+            padding: 15px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 18px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            z-index: 100;
+            transition: all 0.3s ease;
         }
         
-        .btn:hover {
-            background-color: var(--dark-blue);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        .whatsapp-button:hover {
+            background-color: #128C7E;
+            transform: scale(1.05);
         }
         
-        .btn i {
-            margin-right: 10px;
-            font-size: 1.2rem;
+        /* Modal for enlarged image */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 200;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
         }
         
-        .section-title {
-            color: var(--dark-blue);
-            margin: 25px 0 15px;
-            font-size: 1.5rem;
-            text-align: center;
-            position: relative;
-        }
-        
-        .section-title::after {
-            content: '';
+        .modal-content {
             display: block;
-            width: 80px;
-            height: 3px;
-            background-color: var(--secondary-color);
-            margin: 10px auto;
-            border-radius: 3px;
+            margin: 0 auto;
+            max-width: 90%;
+            max-height: 80%;
         }
         
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: var(--dark-blue);
-            font-size: 0.9rem;
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .subtitle {
-                font-size: 1rem;
-            }
-            
-            .btn {
-                padding: 12px 15px;
-                font-size: 0.9rem;
-            }
+        .close:hover {
+            color: #bbb;
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <header>
+        <h1>STOCK AKUN ICAANZ</h1>
+    </header>
+    
     <div class="container">
-        <header>
-            <img src="https://files.catbox.moe/58qh00.jpg" alt="Logo ICAANZ MARKET" class="logo">
-            <h1>ICAANZ MARKET</h1>
-            <p class="subtitle">TEMPAT JUAL BELI AKUN GAME 100% TERAMAN DAN TERPERCAYA</p>
-        </header>
-        
-        <div class="button-container">
-            <a href="https://chat.whatsapp.com/JNZYreHq06G13aT6TYAvR4" class="btn">
-                <i class="fab fa-whatsapp"></i> MARKET ICAANZ V1
-            </a>
+        <div class="products">
+            <div class="product-card">
+                <img src="https://i.supaimg.com/c398d20c-eba7-4149-a109-746f2ae73ca9.jpg" alt="Akun ICAANZ" class="product-image" onclick="enlargeImage(this)">
+                <div class="product-info">
+                    <div class="product-price">Rp 120.000</div>
+                </div>
+            </div>
             
-            <a href="https://chat.whatsapp.com/CFDfbIuhlKbB2gqIv4pvMJ" class="btn">
-                <i class="fab fa-whatsapp"></i> MARKET ICAANZ V2
-            </a>
-            
-            <a href="https://chat.whatsapp.com/B7q8ZHqyEyd8T5zvhg1KQQ" class="btn">
-                <i class="fab fa-whatsapp"></i> MARKET ICAANZ V3
-            </a>
-            
-            <a href="https://wa.me/6283846701246" class="btn">
-                <i class="fab fa-whatsapp"></i> NOMOR ASLI ICAANZ
-            </a>
+            <div class="product-card">
+                <img src="https://i.supaimg.com/a0fcb800-b1cf-4196-80c5-e92d60be3c3b.jpg" alt="Akun ICAANZ" class="product-image" onclick="enlargeImage(this)">
+                <div class="product-info">
+                    <div class="product-price">Rp 70.000</div>
+                </div>
+            </div>
         </div>
         
-        <h2 class="section-title">Saluran Informasi</h2>
-        
-        <div class="button-container">
-            <a href="https://whatsapp.com/channel/0029Vb6lxhN0AgW7SrGy8l0T" class="btn">
-                <i class="fas fa-boxes"></i> ALL STOCK
-            </a>
-            
-            <a href="https://whatsapp.com/channel/0029VazogRAFnSzArgvwBX3O" class="btn">
-                <i class="fas fa-comment-alt"></i> ALL TESTI
-            </a>
-            
-            <a href="https://buylink.id/icaanztopup" class="btn">
-                <i class="fas fa-money-bill-wave"></i> TOP UP MURAH
-            </a>
+        <div class="testimonial-section">
+            <h2>Testimoni Pelanggan ICAANZ</h2>
+            <p>Lihat bukti kepuasan pelanggan kami yang sudah membeli akun ICAANZ</p>
+            <a href="https://whatsapp.com/channel/0029VbBGsZ0G3R3joTodME19" class="testimonial-button" target="_blank">LIHAT TESTIMONI</a>
         </div>
-        
-        <footer>
-            <p>&copy; Terpercaya Sejak Januari 2025 Dengan Total Ratusan Testimoni.</p>
-            <p>Marketplace Teraman Dan Terpercaya Untuk Kamu!!</p>
-        </footer>
     </div>
+    
+    <a href="https://wa.me/6283199265399" class="whatsapp-button">BELI SEKARANG VIA WHATSAPP</a>
+    
+    <!-- Modal for enlarged image -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="enlargedImage">
+    </div>
+    
+    <script>
+        // Function to enlarge image
+        function enlargeImage(img) {
+            var modal = document.getElementById("imageModal");
+            var modalImg = document.getElementById("enlargedImage");
+            
+            modal.style.display = "block";
+            modalImg.src = img.src;
+        }
+        
+        // Function to close modal
+        function closeModal() {
+            document.getElementById("imageModal").style.display = "none";
+        }
+        
+        // Close modal when clicking outside the image
+        window.onclick = function(event) {
+            var modal = document.getElementById("imageModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
