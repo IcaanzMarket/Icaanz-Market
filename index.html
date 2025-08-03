@@ -21,7 +21,7 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
-        h1, h2 {
+        h1, h2, h3 {
             margin: 0;
         }
         
@@ -35,10 +35,16 @@
             margin-bottom: 20px;
         }
         
+        h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
         .container {
             max-width: 1200px;
             margin: 30px auto;
             padding: 0 20px;
+            padding-bottom: 100px;
         }
         
         .products-container {
@@ -90,12 +96,36 @@
             padding: 15px;
         }
         
+        .product-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        
         .product-price {
             font-size: 20px;
             font-weight: bold;
             color: #1a73e8;
             margin: 10px 0;
             text-align: center;
+        }
+        
+        .more-info-btn {
+            display: block;
+            background-color: #1a73e8;
+            color: white;
+            text-align: center;
+            padding: 8px 15px;
+            border-radius: 5px;
+            margin: 10px auto 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: none;
+            width: 100%;
+        }
+        
+        .more-info-btn:hover {
+            background-color: #0d5bba;
         }
         
         .testimonial-section {
@@ -140,6 +170,8 @@
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
             z-index: 100;
             transition: all 0.3s ease;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
         .whatsapp-button:hover {
@@ -147,24 +179,25 @@
             transform: scale(1.05);
         }
         
-        /* Modal for enlarged image */
+        /* Modal styles */
         .modal {
             display: none;
             position: fixed;
             z-index: 200;
-            padding-top: 50px;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.9);
+            overflow: auto;
         }
         
         .modal-content {
+            margin: auto;
             display: block;
-            margin: 0 auto;
             max-width: 90%;
             max-height: 80%;
+            margin-top: 50px;
         }
         
         .close {
@@ -181,6 +214,74 @@
         .close:hover {
             color: #bbb;
         }
+        
+        /* Detail modal styles */
+        .detail-modal {
+            display: none;
+            position: fixed;
+            z-index: 200;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .detail-content {
+            background-color: white;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .detail-images {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .detail-image {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .detail-image:hover {
+            transform: scale(1.02);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 24px;
+            }
+            
+            h2 {
+                font-size: 20px;
+            }
+            
+            .product-card {
+                min-width: 240px;
+            }
+            
+            .whatsapp-button {
+                font-size: 16px;
+                padding: 12px;
+            }
+            
+            .detail-images {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -191,30 +292,38 @@
     <div class="container">
         <div class="products-container">
             <div class="product-card">
-                <img src="https://i.supaimg.com/c398d20c-eba7-4149-a109-746f2ae73ca9.jpg" alt="Akun ICAANZ" class="product-image" onclick="enlargeImage(this)">
+                <img src="https://i.supaimg.com/c398d20c-eba7-4149-a109-746f2ae73ca9.jpg" alt="Akun ICAANZ Premium" class="product-image" onclick="enlargeImage(this)">
                 <div class="product-info">
+                    <div class="product-title">Paket Premium</div>
                     <div class="product-price">Rp 120.000</div>
+                    <button class="more-info-btn" onclick="showDetail('premium')">Selengkapnya</button>
                 </div>
             </div>
             
             <div class="product-card">
-                <img src="https://i.supaimg.com/a0fcb800-b1cf-4196-80c5-e92d60be3c3b.jpg" alt="Akun ICAANZ" class="product-image" onclick="enlargeImage(this)">
+                <img src="https://i.supaimg.com/a0fcb800-b1cf-4196-80c5-e92d60be3c3b.jpg" alt="Akun ICAANZ Standar" class="product-image" onclick="enlargeImage(this)">
                 <div class="product-info">
+                    <div class="product-title">Paket Standar</div>
                     <div class="product-price">Rp 70.000</div>
+                    <button class="more-info-btn" onclick="showDetail('standar')">Selengkapnya</button>
                 </div>
             </div>
             
             <div class="product-card">
-                <img src="https://i.supaimg.com/5776e0a4-8ddb-4f1f-8267-b2672ca30ed3.jpg" alt="Akun ICAANZ" class="product-image" onclick="enlargeImage(this)">
+                <img src="https://i.supaimg.com/5776e0a4-8ddb-4f1f-8267-b2672ca30ed3.jpg" alt="Akun ICAANZ Basic" class="product-image" onclick="enlargeImage(this)">
                 <div class="product-info">
+                    <div class="product-title">Paket Basic</div>
                     <div class="product-price">Rp 35.000</div>
+                    <button class="more-info-btn" onclick="showDetail('basic')">Selengkapnya</button>
                 </div>
             </div>
             
             <div class="product-card">
-                <img src="https://i.supaimg.com/fd3e1e99-6880-4be8-82a6-7d6144ef0882.jpg" alt="Akun ICAANZ" class="product-image" onclick="enlargeImage(this)">
+                <img src="https://i.supaimg.com/fd3e1e99-6880-4be8-82a6-7d6144ef0882.jpg" alt="Akun ICAANZ Trial" class="product-image" onclick="enlargeImage(this)">
                 <div class="product-info">
+                    <div class="product-title">Paket Trial</div>
                     <div class="product-price">Rp 20.000</div>
+                    <button class="more-info-btn" onclick="showDetail('trial')">Selengkapnya</button>
                 </div>
             </div>
         </div>
@@ -226,12 +335,56 @@
         </div>
     </div>
     
-    <a href="https://wa.me/6283199265399" class="whatsapp-button">BELI SEKARANG VIA WHATSAPP</a>
+    <a href="https://wa.me/6283199265399?text=Halo,%20saya%20ingin%20membeli%20akun%20ICAANZ" class="whatsapp-button">BELI SEKARANG VIA WHATSAPP</a>
     
-    <!-- Modal for enlarged image -->
+    <!-- Image Modal -->
     <div id="imageModal" class="modal">
         <span class="close" onclick="closeModal()">&times;</span>
         <img class="modal-content" id="enlargedImage">
+    </div>
+    
+    <!-- Detail Modals -->
+    <div id="premiumModal" class="detail-modal">
+        <div class="detail-content">
+            <span class="close" onclick="closeDetailModal('premiumModal')">&times;</span>
+            <h2>Detail Paket Premium - Rp 120.000</h2>
+            <p>Berikut adalah detail lengkap dari Paket Premium ICAANZ:</p>
+            
+            <div class="detail-images">
+                <img src="https://i.supaimg.com/f3a3331f-095e-4491-b27b-2073d901eedb.jpg" alt="Detail 1" class="detail-image" onclick="enlargeImage(this)">
+                <img src="https://i.supaimg.com/8f51ebb3-ca6a-4c9a-82a4-79e68dcd9121.jpg" alt="Detail 2" class="detail-image" onclick="enlargeImage(this)">
+                <img src="https://i.supaimg.com/71ee2fde-7e5f-4065-949f-11b59bcec533.jpg" alt="Detail 3" class="detail-image" onclick="enlargeImage(this)">
+                <img src="https://i.supaimg.com/35974f91-b83d-4b86-8da0-2f143d3f2901.jpg" alt="Detail 4" class="detail-image" onclick="enlargeImage(this)">
+                <img src="https://i.supaimg.com/682ec652-6813-4311-89b4-bec2a9ea00f2.jpg" alt="Detail 5" class="detail-image" onclick="enlargeImage(this)">
+                <img src="https://i.supaimg.com/df38aea2-6c66-4898-b718-39a0032e4029.jpg" alt="Detail 6" class="detail-image" onclick="enlargeImage(this)">
+                <img src="https://i.supaimg.com/3beaf32a-3d30-4aae-ad0e-39ef5b5ecbe6.jpg" alt="Detail 7" class="detail-image" onclick="enlargeImage(this)">
+                <img src="https://i.supaimg.com/a46560b6-88b5-4e1c-80f7-16a53810b223.jpg" alt="Detail 8" class="detail-image" onclick="enlargeImage(this)">
+            </div>
+        </div>
+    </div>
+    
+    <div id="standarModal" class="detail-modal">
+        <div class="detail-content">
+            <span class="close" onclick="closeDetailModal('standarModal')">&times;</span>
+            <h2>Detail Paket Standar - Rp 70.000</h2>
+            <p>Informasi lebih lanjut tentang Paket Standar akan segera tersedia.</p>
+        </div>
+    </div>
+    
+    <div id="basicModal" class="detail-modal">
+        <div class="detail-content">
+            <span class="close" onclick="closeDetailModal('basicModal')">&times;</span>
+            <h2>Detail Paket Basic - Rp 35.000</h2>
+            <p>Informasi lebih lanjut tentang Paket Basic akan segera tersedia.</p>
+        </div>
+    </div>
+    
+    <div id="trialModal" class="detail-modal">
+        <div class="detail-content">
+            <span class="close" onclick="closeDetailModal('trialModal')">&times;</span>
+            <h2>Detail Paket Trial - Rp 20.000</h2>
+            <p>Informasi lebih lanjut tentang Paket Trial akan segera tersedia.</p>
+        </div>
     </div>
     
     <script>
@@ -249,12 +402,30 @@
             document.getElementById("imageModal").style.display = "none";
         }
         
-        // Close modal when clicking outside the image
+        // Function to show detail modal
+        function showDetail(package) {
+            var modal = document.getElementById(package + "Modal");
+            modal.style.display = "block";
+        }
+        
+        // Function to close detail modal
+        function closeDetailModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+        
+        // Close modals when clicking outside
         window.onclick = function(event) {
-            var modal = document.getElementById("imageModal");
-            if (event.target == modal) {
-                modal.style.display = "none";
+            var imageModal = document.getElementById("imageModal");
+            if (event.target == imageModal) {
+                imageModal.style.display = "none";
             }
+            
+            var detailModals = document.querySelectorAll('.detail-modal');
+            detailModals.forEach(function(modal) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            });
         }
     </script>
 </body>
