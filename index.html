@@ -36,16 +36,33 @@
         }
         
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 30px auto;
             padding: 0 20px;
         }
         
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
+        .products-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding-bottom: 20px;
             margin-bottom: 40px;
+            scrollbar-width: thin;
+            scrollbar-color: #1a73e8 #f5f9ff;
+        }
+        
+        .products-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .products-container::-webkit-scrollbar-track {
+            background: #f5f9ff;
+            border-radius: 10px;
+        }
+        
+        .products-container::-webkit-scrollbar-thumb {
+            background-color: #1a73e8;
+            border-radius: 10px;
         }
         
         .product-card {
@@ -54,6 +71,8 @@
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
+            min-width: 280px;
+            flex-shrink: 0;
         }
         
         .product-card:hover {
@@ -76,6 +95,7 @@
             font-weight: bold;
             color: #1a73e8;
             margin: 10px 0;
+            text-align: center;
         }
         
         .testimonial-section {
@@ -169,7 +189,7 @@
     </header>
     
     <div class="container">
-        <div class="products">
+        <div class="products-container">
             <div class="product-card">
                 <img src="https://i.supaimg.com/c398d20c-eba7-4149-a109-746f2ae73ca9.jpg" alt="Akun ICAANZ" class="product-image" onclick="enlargeImage(this)">
                 <div class="product-info">
