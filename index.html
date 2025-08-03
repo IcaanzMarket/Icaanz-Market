@@ -11,10 +11,10 @@
             padding: 0;
             background-color: #f5f9ff;
             color: #333;
+            overflow-x: auto;
         }
         .container {
-            max-width: 1000px;
-            margin: 0 auto;
+            max-width: 100%;
             padding: 20px;
         }
         .banner {
@@ -29,22 +29,22 @@
             text-align: center;
             margin-bottom: 30px;
         }
-        .stock-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        .stocks-wrapper {
+            display: flex;
+            overflow-x: auto;
             gap: 20px;
-            margin-bottom: 40px;
+            padding-bottom: 20px;
+            scroll-snap-type: x mandatory;
         }
         .stock-item {
+            min-width: 300px;
             background-color: white;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
             position: relative;
-        }
-        .stock-item:hover {
-            transform: translateY(-5px);
+            scroll-snap-align: start;
+            flex-shrink: 0;
         }
         .stock-image {
             width: 100%;
@@ -54,14 +54,36 @@
         .stock-details {
             padding: 15px;
         }
+        .stock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .stock-name {
+            font-weight: bold;
+            font-size: 18px;
+            color: #1a73e8;
+        }
         .stock-price {
             font-size: 20px;
             font-weight: bold;
             color: #1a73e8;
-            margin: 10px 0;
+        }
+        .stock-ready {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         .btn {
-            display: inline-block;
+            display: block;
             padding: 10px 20px;
             background-color: #1a73e8;
             color: white;
@@ -69,12 +91,33 @@
             border-radius: 5px;
             font-weight: bold;
             text-align: center;
+            margin-top: 15px;
             transition: background-color 0.3s;
-            width: 100%;
-            box-sizing: border-box;
         }
         .btn:hover {
             background-color: #0d5bba;
+        }
+        .specs-container {
+            margin-top: 15px;
+        }
+        .specs-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            cursor: pointer;
+            color: #1a73e8;
+        }
+        .specs-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding-bottom: 10px;
+            scroll-snap-type: x mandatory;
+        }
+        .specs-scroll img {
+            height: 120px;
+            scroll-snap-align: start;
+            border-radius: 5px;
+            flex-shrink: 0;
         }
         .testimonial-link {
             display: block;
@@ -90,39 +133,10 @@
         .testimonial-link a:hover {
             text-decoration: underline;
         }
-        .specs-title {
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        .specs-images {
-            margin-top: 10px;
-        }
-        .specs-images img {
-            width: 100%;
-            margin-bottom: 5px;
-            border-radius: 5px;
-        }
-        .stock-ready {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #4CAF50;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        .stock-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .stock-name {
-            font-weight: bold;
-            font-size: 18px;
-            color: #1a73e8;
+        /* Hide scrollbar but keep functionality */
+        .stocks-wrapper::-webkit-scrollbar,
+        .specs-scroll::-webkit-scrollbar {
+            display: none;
         }
     </style>
 </head>
@@ -131,7 +145,7 @@
         <img src="https://i.supaimg.com/d2388873-432b-45e3-abf3-ba88801b5cdc.jpg" alt="STOCK ICAANZ Banner" class="banner">
         <h1>STOCK ICAANZ</h1>
         
-        <div class="stock-container">
+        <div class="stocks-wrapper">
             <!-- Stock 1 -->
             <div class="stock-item">
                 <span class="stock-ready">STOCK READY✅</span>
@@ -141,17 +155,19 @@
                         <div class="stock-name">STOCK 1</div>
                         <div class="stock-price">Rp 120.000</div>
                     </div>
-                    <div class="specs-title">Spek Lengkap:</div>
-                    <div class="specs-images">
-                        <img src="https://i.supaimg.com/c398d20c-eba7-4149-a109-746f2ae73ca9.jpg">
-                        <img src="https://i.supaimg.com/a46560b6-88b5-4e1c-80f7-16a53810b223.jpg">
-                        <img src="https://i.supaimg.com/f3a3331f-095e-4491-b27b-2073d901eedb.jpg">
-                        <img src="https://i.supaimg.com/8f51ebb3-ca6a-4c9a-82a4-79e68dcd9121.jpg">
-                        <img src="https://i.supaimg.com/71ee2fde-7e5f-4065-949f-11b59bcec533.jpg">
-                        <img src="https://i.supaimg.com/35974f91-b83d-4b86-8da0-2f143d3f2901.jpg">
-                        <img src="https://i.supaimg.com/682ec652-6813-4311-89b4-bec2a9ea00f2.jpg">
-                        <img src="https://i.supaimg.com/df38aea2-6c66-4898-b718-39a0032e4029.jpg">
-                        <img src="https://i.supaimg.com/3beaf32a-3d30-4aae-ad0e-39ef5b5ecbe6.jpg">
+                    <div class="specs-container">
+                        <div class="specs-title">Spek Lengkap:</div>
+                        <div class="specs-scroll">
+                            <img src="https://i.supaimg.com/c398d20c-eba7-4149-a109-746f2ae73ca9.jpg">
+                            <img src="https://i.supaimg.com/a46560b6-88b5-4e1c-80f7-16a53810b223.jpg">
+                            <img src="https://i.supaimg.com/f3a3331f-095e-4491-b27b-2073d901eedb.jpg">
+                            <img src="https://i.supaimg.com/8f51ebb3-ca6a-4c9a-82a4-79e68dcd9121.jpg">
+                            <img src="https://i.supaimg.com/71ee2fde-7e5f-4065-949f-11b59bcec533.jpg">
+                            <img src="https://i.supaimg.com/35974f91-b83d-4b86-8da0-2f143d3f2901.jpg">
+                            <img src="https://i.supaimg.com/682ec652-6813-4311-89b4-bec2a9ea00f2.jpg">
+                            <img src="https://i.supaimg.com/df38aea2-6c66-4898-b718-39a0032e4029.jpg">
+                            <img src="https://i.supaimg.com/3beaf32a-3d30-4aae-ad0e-39ef5b5ecbe6.jpg">
+                        </div>
                     </div>
                     <a href="https://wa.me/6283199265438" class="btn">BELI</a>
                 </div>
@@ -166,9 +182,11 @@
                         <div class="stock-name">STOCK 2</div>
                         <div class="stock-price">Rp 70.000</div>
                     </div>
-                    <div class="specs-title">Spek Lengkap:</div>
-                    <div class="specs-images">
-                        <img src="https://i.supaimg.com/a0fcb800-b1cf-4196-80c5-e92d60be3c3b.jpg">
+                    <div class="specs-container">
+                        <div class="specs-title">Spek Lengkap:</div>
+                        <div class="specs-scroll">
+                            <img src="https://i.supaimg.com/a0fcb800-b1cf-4196-80c5-e92d60be3c3b.jpg">
+                        </div>
                     </div>
                     <a href="https://wa.me/6283199265438" class="btn">BELI</a>
                 </div>
@@ -183,9 +201,11 @@
                         <div class="stock-name">STOCK 3</div>
                         <div class="stock-price">Rp 35.000</div>
                     </div>
-                    <div class="specs-title">Spek Lengkap:</div>
-                    <div class="specs-images">
-                        <img src="https://i.supaimg.com/5776e0a4-8ddb-4f1f-8267-b2672ca30ed3.jpg">
+                    <div class="specs-container">
+                        <div class="specs-title">Spek Lengkap:</div>
+                        <div class="specs-scroll">
+                            <img src="https://i.supaimg.com/5776e0a4-8ddb-4f1f-8267-b2672ca30ed3.jpg">
+                        </div>
                     </div>
                     <a href="https://wa.me/6283199265438" class="btn">BELI</a>
                 </div>
@@ -200,9 +220,11 @@
                         <div class="stock-name">STOCK 4</div>
                         <div class="stock-price">Rp 20.000</div>
                     </div>
-                    <div class="specs-title">Spek Lengkap:</div>
-                    <div class="specs-images">
-                        <img src="https://i.supaimg.com/fd3e1e99-6880-4be8-82a6-7d6144ef0882.jpg">
+                    <div class="specs-container">
+                        <div class="specs-title">Spek Lengkap:</div>
+                        <div class="specs-scroll">
+                            <img src="https://i.supaimg.com/fd3e1e99-6880-4be8-82a6-7d6144ef0882.jpg">
+                        </div>
                     </div>
                     <a href="https://wa.me/6283199265438" class="btn">BELI</a>
                 </div>
