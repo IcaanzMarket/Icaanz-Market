@@ -41,34 +41,17 @@
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 30px auto;
             padding: 0 20px;
             padding-bottom: 100px;
         }
         
-        .products-container {
-            display: flex;
-            overflow-x: auto;
-            gap: 20px;
-            padding-bottom: 20px;
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
             margin-bottom: 40px;
-            scrollbar-width: thin;
-            scrollbar-color: #1a73e8 #f5f9ff;
-        }
-        
-        .products-container::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .products-container::-webkit-scrollbar-track {
-            background: #f5f9ff;
-            border-radius: 10px;
-        }
-        
-        .products-container::-webkit-scrollbar-thumb {
-            background-color: #1a73e8;
-            border-radius: 10px;
         }
         
         .product-card {
@@ -77,8 +60,6 @@
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
-            min-width: 280px;
-            flex-shrink: 0;
         }
         
         .product-card:hover {
@@ -99,7 +80,17 @@
         .product-title {
             font-weight: bold;
             margin-bottom: 5px;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stock-ready {
+            color: #0a8a0a;
+            font-size: 14px;
+            background-color: #e6f7e6;
+            padding: 3px 8px;
+            border-radius: 10px;
         }
         
         .product-price {
@@ -107,7 +98,6 @@
             font-weight: bold;
             color: #1a73e8;
             margin: 10px 0;
-            text-align: center;
         }
         
         .more-info-btn {
@@ -117,7 +107,7 @@
             text-align: center;
             padding: 8px 15px;
             border-radius: 5px;
-            margin: 10px auto 0;
+            margin: 10px 0;
             cursor: pointer;
             transition: background-color 0.3s;
             border: none;
@@ -170,7 +160,7 @@
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
             z-index: 100;
             transition: all 0.3s ease;
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
         }
         
@@ -240,16 +230,41 @@
             overflow-y: auto;
         }
         
-        .detail-images {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .detail-images-container {
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 20px;
+            scrollbar-width: thin;
+            scrollbar-color: #1a73e8 #f5f9ff;
+        }
+        
+        .detail-images-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .detail-images-container::-webkit-scrollbar-track {
+            background: #f5f9ff;
+            border-radius: 10px;
+        }
+        
+        .detail-images-container::-webkit-scrollbar-thumb {
+            background-color: #1a73e8;
+            border-radius: 10px;
         }
         
         .detail-image {
-            width: 100%;
-            height: auto;
+            display: inline-block;
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            margin-right: 15px;
             border-radius: 5px;
             cursor: pointer;
             transition: transform 0.3s;
@@ -269,8 +284,8 @@
                 font-size: 20px;
             }
             
-            .product-card {
-                min-width: 240px;
+            .products {
+                grid-template-columns: 1fr;
             }
             
             .whatsapp-button {
@@ -278,8 +293,9 @@
                 padding: 12px;
             }
             
-            .detail-images {
-                grid-template-columns: 1fr;
+            .detail-image {
+                width: 250px;
+                height: 150px;
             }
         }
     </style>
@@ -290,11 +306,14 @@
     </header>
     
     <div class="container">
-        <div class="products-container">
+        <div class="products">
             <div class="product-card">
                 <img src="https://i.supaimg.com/c398d20c-eba7-4149-a109-746f2ae73ca9.jpg" alt="Akun ICAANZ Premium" class="product-image" onclick="enlargeImage(this)">
                 <div class="product-info">
-                    <div class="product-title">Paket Premium</div>
+                    <div class="product-title">
+                        Paket Premium
+                        <span class="stock-ready">STOCK READY✅</span>
+                    </div>
                     <div class="product-price">Rp 120.000</div>
                     <button class="more-info-btn" onclick="showDetail('premium')">Selengkapnya</button>
                 </div>
@@ -303,7 +322,10 @@
             <div class="product-card">
                 <img src="https://i.supaimg.com/a0fcb800-b1cf-4196-80c5-e92d60be3c3b.jpg" alt="Akun ICAANZ Standar" class="product-image" onclick="enlargeImage(this)">
                 <div class="product-info">
-                    <div class="product-title">Paket Standar</div>
+                    <div class="product-title">
+                        Paket Standar
+                        <span class="stock-ready">STOCK READY✅</span>
+                    </div>
                     <div class="product-price">Rp 70.000</div>
                     <button class="more-info-btn" onclick="showDetail('standar')">Selengkapnya</button>
                 </div>
@@ -312,7 +334,10 @@
             <div class="product-card">
                 <img src="https://i.supaimg.com/5776e0a4-8ddb-4f1f-8267-b2672ca30ed3.jpg" alt="Akun ICAANZ Basic" class="product-image" onclick="enlargeImage(this)">
                 <div class="product-info">
-                    <div class="product-title">Paket Basic</div>
+                    <div class="product-title">
+                        Paket Basic
+                        <span class="stock-ready">STOCK READY✅</span>
+                    </div>
                     <div class="product-price">Rp 35.000</div>
                     <button class="more-info-btn" onclick="showDetail('basic')">Selengkapnya</button>
                 </div>
@@ -321,7 +346,10 @@
             <div class="product-card">
                 <img src="https://i.supaimg.com/fd3e1e99-6880-4be8-82a6-7d6144ef0882.jpg" alt="Akun ICAANZ Trial" class="product-image" onclick="enlargeImage(this)">
                 <div class="product-info">
-                    <div class="product-title">Paket Trial</div>
+                    <div class="product-title">
+                        Paket Trial
+                        <span class="stock-ready">STOCK READY✅</span>
+                    </div>
                     <div class="product-price">Rp 20.000</div>
                     <button class="more-info-btn" onclick="showDetail('trial')">Selengkapnya</button>
                 </div>
@@ -329,13 +357,13 @@
         </div>
         
         <div class="testimonial-section">
-            <h2>Testimoni ICAANZ</h2>
-            <p>Lihat bukti kepuasan pelanggan kami yang sudah membeli akun di ICAANZ Market</p>
+            <h2>Testimoni Pelanggan ICAANZ</h2>
+            <p>Lihat bukti kepuasan pelanggan kami yang sudah membeli akun ICAANZ</p>
             <a href="https://whatsapp.com/channel/0029VbBGsZ0G3R3joTodME19" class="testimonial-button" target="_blank">LIHAT TESTIMONI</a>
         </div>
     </div>
     
-    <a href="https://wa.me/6283199265399?text=Halo,%20saya%20ingin%20membeli%20akun%20bang" class="whatsapp-button">BELI SEKARANG VIA WHATSAPP</a>
+    <a href="https://wa.me/6283199265399?text=Halo,%20saya%20ingin%20membeli%20akun%20ICAANZ" class="whatsapp-button">BELI SEKARANG VIA WHATSAPP</a>
     
     <!-- Image Modal -->
     <div id="imageModal" class="modal">
@@ -344,13 +372,15 @@
     </div>
     
     <!-- Detail Modals -->
-    <div id="STOCK READY✅" class="detail-akun">
+    <div id="premiumModal" class="detail-modal">
         <div class="detail-content">
-            <span class="close" onclick="closeDetailModal('premiumModal')">&times;</span>
-            <h2>Detail Akun - Rp 120.000</h2>
-            <p>Berikut adalah detail lengkap dari akun ICAANZ:</p>
+            <div class="detail-header">
+                <h2>Detail Paket Premium - Rp 120.000</h2>
+                <span class="close" onclick="closeDetailModal('premiumModal')">&times;</span>
+            </div>
+            <p>Berikut adalah detail lengkap dari Paket Premium ICAANZ:</p>
             
-            <div class="detail-images">
+            <div class="detail-images-container">
                 <img src="https://i.supaimg.com/f3a3331f-095e-4491-b27b-2073d901eedb.jpg" alt="Detail 1" class="detail-image" onclick="enlargeImage(this)">
                 <img src="https://i.supaimg.com/8f51ebb3-ca6a-4c9a-82a4-79e68dcd9121.jpg" alt="Detail 2" class="detail-image" onclick="enlargeImage(this)">
                 <img src="https://i.supaimg.com/71ee2fde-7e5f-4065-949f-11b59bcec533.jpg" alt="Detail 3" class="detail-image" onclick="enlargeImage(this)">
@@ -363,27 +393,33 @@
         </div>
     </div>
     
-    <div id="STOCK READY✅" class="detail-akun">
-        <div class="detail-akun">
-            <span class="close" onclick="closeSTOCK READY✅('standarModal')">&times;</span>
-            <h2>Detail Akun - Rp 70.000</h2>
-            <p>Informasi lebih lanjut tentang Akun akan segera tersedia.</p>
+    <div id="standarModal" class="detail-modal">
+        <div class="detail-content">
+            <div class="detail-header">
+                <h2>Detail Paket Standar - Rp 70.000</h2>
+                <span class="close" onclick="closeDetailModal('standarModal')">&times;</span>
+            </div>
+            <p>Informasi lebih lanjut tentang Paket Standar akan segera tersedia.</p>
         </div>
     </div>
     
-    <div id="STOCK READY✅" class="detail-akun">
-        <div class="detail-akun">
-            <span class="close" onclick="closeSTOCK READY✅('basicModal')">&times;</span>
-            <h2>Detail Paket Basic - Rp 35.000</h2>
-            <p>Informasi lebih lanjut tentang akun akan segera tersedia.</p>
+    <div id="basicModal" class="detail-modal">
+        <div class="detail-content">
+            <div class="detail-header">
+                <h2>Detail Paket Basic - Rp 35.000</h2>
+                <span class="close" onclick="closeDetailModal('basicModal')">&times;</span>
+            </div>
+            <p>Informasi lebih lanjut tentang Paket Basic akan segera tersedia.</p>
         </div>
     </div>
     
-    <div id="STOCK READY✅" class="detail-akun">
-        <div class="detail-akun">
-            <span class="close" onclick="closeSTOCK READY✅('trialModal')">&times;</span>
-            <h2>Detail Akun - Rp 20.000</h2>
-            <p>Informasi lebih lanjut tentang akun akan segera tersedia.</p>
+    <div id="trialModal" class="detail-modal">
+        <div class="detail-content">
+            <div class="detail-header">
+                <h2>Detail Paket Trial - Rp 20.000</h2>
+                <span class="close" onclick="closeDetailModal('trialModal')">&times;</span>
+            </div>
+            <p>Informasi lebih lanjut tentang Paket Trial akan segera tersedia.</p>
         </div>
     </div>
     
