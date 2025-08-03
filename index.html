@@ -36,17 +36,18 @@
         }
         
         .container {
-            max-width: 1000px;
+            max-width: 1400px;
             margin: 30px auto;
             padding: 0 20px;
             padding-bottom: 100px;
         }
         
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
+        .products-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+            justify-content: flex-start;
         }
         
         .product-card {
@@ -55,6 +56,9 @@
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
+            width: calc(20% - 16px);
+            min-width: 200px;
+            flex-grow: 1;
         }
         
         .product-card:hover {
@@ -63,9 +67,8 @@
         
         .product-image {
             width: 100%;
-            height: 200px;
+            height: 150px;
             object-fit: cover;
-            cursor: pointer;
         }
         
         .product-info {
@@ -78,18 +81,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 14px;
         }
         
         .stock-ready {
             color: #0a8a0a;
-            font-size: 14px;
+            font-size: 12px;
             background-color: #e6f7e6;
-            padding: 3px 8px;
+            padding: 2px 6px;
             border-radius: 10px;
         }
         
         .product-price {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             color: #1a73e8;
             margin: 10px 0;
@@ -107,6 +111,7 @@
             transition: background-color 0.3s;
             border: none;
             width: 100%;
+            font-size: 14px;
         }
         
         .more-info-btn:hover {
@@ -118,7 +123,7 @@
             padding: 25px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 40px;
+            margin: 40px 0;
             text-align: center;
         }
         
@@ -155,7 +160,7 @@
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
             z-index: 100;
             transition: all 0.3s ease;
-            max-width: 1000px;
+            max-width: 1400px;
             margin: 0 auto;
         }
         
@@ -184,7 +189,7 @@
             margin: 50px auto;
             padding: 20px;
             border-radius: 10px;
-            max-width: 800px;
+            max-width: 90%;
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -197,37 +202,30 @@
         }
         
         .detail-images-container {
-            overflow-x: auto;
-            white-space: nowrap;
-            padding-bottom: 20px;
-            scrollbar-width: thin;
-            scrollbar-color: #1a73e8 #f5f9ff;
-        }
-        
-        .detail-images-container::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .detail-images-container::-webkit-scrollbar-track {
-            background: #f5f9ff;
-            border-radius: 10px;
-        }
-        
-        .detail-images-container::-webkit-scrollbar-thumb {
-            background-color: #1a73e8;
-            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
         
         .detail-image {
-            display: inline-block;
-            width: 300px;
-            height: 200px;
-            object-fit: cover;
-            margin-right: 15px;
+            width: 100%;
+            height: auto;
             border-radius: 5px;
         }
         
         /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .product-card {
+                width: calc(25% - 15px);
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .product-card {
+                width: calc(33.33% - 14px);
+            }
+        }
+        
         @media (max-width: 768px) {
             h1 {
                 font-size: 24px;
@@ -237,18 +235,19 @@
                 font-size: 20px;
             }
             
-            .products {
-                grid-template-columns: 1fr;
+            .product-card {
+                width: calc(50% - 10px);
             }
             
             .whatsapp-button {
                 font-size: 16px;
                 padding: 12px;
             }
-            
-            .detail-image {
-                width: 250px;
-                height: 150px;
+        }
+        
+        @media (max-width: 480px) {
+            .product-card {
+                width: 100%;
             }
         }
     </style>
@@ -259,7 +258,8 @@
     </header>
     
     <div class="container">
-        <div class="products">
+        <!-- First Row -->
+        <div class="products-row">
             <div class="product-card">
                 <img src="https://i.supaimg.com/c398d20c-eba7-4149-a109-746f2ae73ca9.jpg" alt="STOCK 1" class="product-image">
                 <div class="product-info">
@@ -307,6 +307,81 @@
                     <button class="more-info-btn" onclick="showDetail('stock4')">Selengkapnya</button>
                 </div>
             </div>
+            
+            <div class="product-card">
+                <img src="https://i.supaimg.com/c398d20c-eba7-4149-a109-746f2ae73ca9.jpg" alt="STOCK 5" class="product-image">
+                <div class="product-info">
+                    <div class="product-title">
+                        STOCK 5
+                        <span class="stock-ready">STOCK READY✅</span>
+                    </div>
+                    <div class="product-price">Rp 120.000</div>
+                    <button class="more-info-btn" onclick="showDetail('stock5')">Selengkapnya</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Second Row -->
+        <div class="products-row">
+            <div class="product-card">
+                <img src="https://i.supaimg.com/a0fcb800-b1cf-4196-80c5-e92d60be3c3b.jpg" alt="STOCK 6" class="product-image">
+                <div class="product-info">
+                    <div class="product-title">
+                        STOCK 6
+                        <span class="stock-ready">STOCK READY✅</span>
+                    </div>
+                    <div class="product-price">Rp 70.000</div>
+                    <button class="more-info-btn" onclick="showDetail('stock6')">Selengkapnya</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <img src="https://i.supaimg.com/5776e0a4-8ddb-4f1f-8267-b2672ca30ed3.jpg" alt="STOCK 7" class="product-image">
+                <div class="product-info">
+                    <div class="product-title">
+                        STOCK 7
+                        <span class="stock-ready">STOCK READY✅</span>
+                    </div>
+                    <div class="product-price">Rp 35.000</div>
+                    <button class="more-info-btn" onclick="showDetail('stock7')">Selengkapnya</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <img src="https://i.supaimg.com/fd3e1e99-6880-4be8-82a6-7d6144ef0882.jpg" alt="STOCK 8" class="product-image">
+                <div class="product-info">
+                    <div class="product-title">
+                        STOCK 8
+                        <span class="stock-ready">STOCK READY✅</span>
+                    </div>
+                    <div class="product-price">Rp 20.000</div>
+                    <button class="more-info-btn" onclick="showDetail('stock8')">Selengkapnya</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <img src="https://i.supaimg.com/c398d20c-eba7-4149-a109-746f2ae73ca9.jpg" alt="STOCK 9" class="product-image">
+                <div class="product-info">
+                    <div class="product-title">
+                        STOCK 9
+                        <span class="stock-ready">STOCK READY✅</span>
+                    </div>
+                    <div class="product-price">Rp 120.000</div>
+                    <button class="more-info-btn" onclick="showDetail('stock9')">Selengkapnya</button>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <img src="https://i.supaimg.com/a0fcb800-b1cf-4196-80c5-e92d60be3c3b.jpg" alt="STOCK 10" class="product-image">
+                <div class="product-info">
+                    <div class="product-title">
+                        STOCK 10
+                        <span class="stock-ready">STOCK READY✅</span>
+                    </div>
+                    <div class="product-price">Rp 70.000</div>
+                    <button class="more-info-btn" onclick="showDetail('stock10')">Selengkapnya</button>
+                </div>
+            </div>
         </div>
         
         <div class="testimonial-section">
@@ -325,8 +400,6 @@
                 <h2>STOCK 1 - Rp 120.000</h2>
                 <span class="close" onclick="closeDetailModal('stock1Modal')">&times;</span>
             </div>
-            <p>Detail lengkap untuk STOCK 1:</p>
-            
             <div class="detail-images-container">
                 <img src="https://i.supaimg.com/f3a3331f-095e-4491-b27b-2073d901eedb.jpg" alt="Detail 1" class="detail-image">
                 <img src="https://i.supaimg.com/8f51ebb3-ca6a-4c9a-82a4-79e68dcd9121.jpg" alt="Detail 2" class="detail-image">
@@ -346,39 +419,13 @@
                 <h2>STOCK 2 - Rp 70.000</h2>
                 <span class="close" onclick="closeDetailModal('stock2Modal')">&times;</span>
             </div>
-            <p>Detail lengkap untuk STOCK 2:</p>
             <div class="detail-images-container">
                 <img src="https://i.supaimg.com/a0fcb800-b1cf-4196-80c5-e92d60be3c3b.jpg" alt="STOCK 2" class="detail-image">
             </div>
         </div>
     </div>
     
-    <div id="stock3Modal" class="detail-modal">
-        <div class="detail-content">
-            <div class="detail-header">
-                <h2>STOCK 3 - Rp 35.000</h2>
-                <span class="close" onclick="closeDetailModal('stock3Modal')">&times;</span>
-            </div>
-            <p>Detail lengkap untuk STOCK 3:</p>
-            <div class="detail-images-container">
-                <img src="https://i.supaimg.com/5776e0a4-8ddb-4f1f-8267-b2672ca30ed3.jpg" alt="STOCK 3" class="detail-image">
-            </div>
-        </div>
-    </div>
-    
-    <div id="stock4Modal" class="detail-modal">
-        <div class="detail-content">
-            <div class="detail-header">
-                <h2>STOCK 4 - Rp 20.000</h2>
-                <span class="close" onclick="closeDetailModal('stock4Modal')">&times;</span>
-            </div>
-            <p>Detail lengkap untuk STOCK 4:</p>
-            <div class="detail-images-container">
-                <img src="https://i.supaimg.com/fd3e1e99-6880-4be8-82a6-7d6144ef0882.jpg" alt="STOCK 4" class="detail-image">
-            </div>
-        </div>
-    </div>
-    
+    <!-- Add similar modals for other stocks (3-10) -->
     <script>
         // Function to show detail modal
         function showDetail(stockId) {
