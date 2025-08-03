@@ -11,10 +11,10 @@
             padding: 0;
             background-color: #f5f9ff;
             color: #333;
-            overflow-x: auto;
         }
         .container {
-            max-width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
             padding: 20px;
         }
         .banner {
@@ -29,27 +29,28 @@
             text-align: center;
             margin-bottom: 30px;
         }
-        .stocks-wrapper {
-            display: flex;
-            overflow-x: auto;
+        .stock-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
-            padding-bottom: 20px;
-            scroll-snap-type: x mandatory;
+            margin-bottom: 40px;
         }
         .stock-item {
-            min-width: 300px;
             background-color: white;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: relative;
-            scroll-snap-align: start;
-            flex-shrink: 0;
         }
         .stock-image {
             width: 100%;
-            height: 200px;
+            height: 150px;
             object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .stock-image:hover {
+            transform: scale(1.02);
         }
         .stock-details {
             padding: 15px;
@@ -62,11 +63,11 @@
         }
         .stock-name {
             font-weight: bold;
-            font-size: 18px;
+            font-size: 16px;
             color: #1a73e8;
         }
         .stock-price {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             color: #1a73e8;
         }
@@ -84,7 +85,7 @@
         }
         .btn {
             display: block;
-            padding: 10px 20px;
+            padding: 8px 15px;
             background-color: #1a73e8;
             color: white;
             text-decoration: none;
@@ -93,18 +94,31 @@
             text-align: center;
             margin-top: 15px;
             transition: background-color 0.3s;
+            font-size: 14px;
         }
         .btn:hover {
             background-color: #0d5bba;
         }
-        .specs-container {
-            margin-top: 15px;
-        }
-        .specs-title {
+        .specs-toggle {
             font-weight: bold;
-            margin-bottom: 10px;
-            cursor: pointer;
+            margin: 10px 0 5px;
             color: #1a73e8;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        .specs-toggle:after {
+            content: "+";
+            margin-left: 5px;
+            font-size: 18px;
+        }
+        .specs-toggle.active:after {
+            content: "-";
+        }
+        .specs-content {
+            display: none;
+            overflow: hidden;
         }
         .specs-scroll {
             display: flex;
@@ -114,10 +128,11 @@
             scroll-snap-type: x mandatory;
         }
         .specs-scroll img {
-            height: 120px;
+            height: 100px;
             scroll-snap-align: start;
             border-radius: 5px;
             flex-shrink: 0;
+            cursor: pointer;
         }
         .testimonial-link {
             display: block;
@@ -133,10 +148,66 @@
         .testimonial-link a:hover {
             text-decoration: underline;
         }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            overflow: auto;
+        }
+        .modal-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .modal-img {
+            max-width: 90%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .gallery-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        .gallery-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #bbb;
+            cursor: pointer;
+        }
+        .gallery-dot.active {
+            background-color: #1a73e8;
+        }
         /* Hide scrollbar but keep functionality */
-        .stocks-wrapper::-webkit-scrollbar,
         .specs-scroll::-webkit-scrollbar {
             display: none;
+        }
+
+        @media (max-width: 600px) {
+            .stock-container {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -145,28 +216,28 @@
         <img src="https://i.supaimg.com/d2388873-432b-45e3-abf3-ba88801b5cdc.jpg" alt="STOCK ICAANZ Banner" class="banner">
         <h1>STOCK ICAANZ</h1>
         
-        <div class="stocks-wrapper">
+        <div class="stock-container">
             <!-- Stock 1 -->
             <div class="stock-item">
                 <span class="stock-ready">STOCK READY✅</span>
-                <img src="https://i.supaimg.com/c398d20c-eba7-4149-a109-746f2ae73ca9.jpg" alt="STOCK 1" class="stock-image">
+                <img src="https://i.supaimg.com/c398d20c-eba7-4149-a109-746f2ae73ca9.jpg" alt="STOCK 1" class="stock-image" onclick="openModal(this.src)">
                 <div class="stock-details">
                     <div class="stock-header">
                         <div class="stock-name">STOCK 1</div>
                         <div class="stock-price">Rp 120.000</div>
                     </div>
-                    <div class="specs-container">
-                        <div class="specs-title">Spek Lengkap:</div>
+                    <div class="specs-toggle" onclick="toggleSpecs(this)">Spek Lengkap</div>
+                    <div class="specs-content">
                         <div class="specs-scroll">
-                            <img src="https://i.supaimg.com/c398d20c-eba7-4149-a109-746f2ae73ca9.jpg">
-                            <img src="https://i.supaimg.com/a46560b6-88b5-4e1c-80f7-16a53810b223.jpg">
-                            <img src="https://i.supaimg.com/f3a3331f-095e-4491-b27b-2073d901eedb.jpg">
-                            <img src="https://i.supaimg.com/8f51ebb3-ca6a-4c9a-82a4-79e68dcd9121.jpg">
-                            <img src="https://i.supaimg.com/71ee2fde-7e5f-4065-949f-11b59bcec533.jpg">
-                            <img src="https://i.supaimg.com/35974f91-b83d-4b86-8da0-2f143d3f2901.jpg">
-                            <img src="https://i.supaimg.com/682ec652-6813-4311-89b4-bec2a9ea00f2.jpg">
-                            <img src="https://i.supaimg.com/df38aea2-6c66-4898-b718-39a0032e4029.jpg">
-                            <img src="https://i.supaimg.com/3beaf32a-3d30-4aae-ad0e-39ef5b5ecbe6.jpg">
+                            <img src="https://i.supaimg.com/c398d20c-eba7-4149-a109-746f2ae73ca9.jpg" onclick="openModal(this.src)">
+                            <img src="https://i.supaimg.com/a46560b6-88b5-4e1c-80f7-16a53810b223.jpg" onclick="openModal(this.src)">
+                            <img src="https://i.supaimg.com/f3a3331f-095e-4491-b27b-2073d901eedb.jpg" onclick="openModal(this.src)">
+                            <img src="https://i.supaimg.com/8f51ebb3-ca6a-4c9a-82a4-79e68dcd9121.jpg" onclick="openModal(this.src)">
+                            <img src="https://i.supaimg.com/71ee2fde-7e5f-4065-949f-11b59bcec533.jpg" onclick="openModal(this.src)">
+                            <img src="https://i.supaimg.com/35974f91-b83d-4b86-8da0-2f143d3f2901.jpg" onclick="openModal(this.src)">
+                            <img src="https://i.supaimg.com/682ec652-6813-4311-89b4-bec2a9ea00f2.jpg" onclick="openModal(this.src)">
+                            <img src="https://i.supaimg.com/df38aea2-6c66-4898-b718-39a0032e4029.jpg" onclick="openModal(this.src)">
+                            <img src="https://i.supaimg.com/3beaf32a-3d30-4aae-ad0e-39ef5b5ecbe6.jpg" onclick="openModal(this.src)">
                         </div>
                     </div>
                     <a href="https://wa.me/6283199265438" class="btn">BELI</a>
@@ -176,16 +247,16 @@
             <!-- Stock 2 -->
             <div class="stock-item">
                 <span class="stock-ready">STOCK READY✅</span>
-                <img src="https://i.supaimg.com/a0fcb800-b1cf-4196-80c5-e92d60be3c3b.jpg" alt="STOCK 2" class="stock-image">
+                <img src="https://i.supaimg.com/a0fcb800-b1cf-4196-80c5-e92d60be3c3b.jpg" alt="STOCK 2" class="stock-image" onclick="openModal(this.src)">
                 <div class="stock-details">
                     <div class="stock-header">
                         <div class="stock-name">STOCK 2</div>
                         <div class="stock-price">Rp 70.000</div>
                     </div>
-                    <div class="specs-container">
-                        <div class="specs-title">Spek Lengkap:</div>
+                    <div class="specs-toggle" onclick="toggleSpecs(this)">Spek Lengkap</div>
+                    <div class="specs-content">
                         <div class="specs-scroll">
-                            <img src="https://i.supaimg.com/a0fcb800-b1cf-4196-80c5-e92d60be3c3b.jpg">
+                            <img src="https://i.supaimg.com/a0fcb800-b1cf-4196-80c5-e92d60be3c3b.jpg" onclick="openModal(this.src)">
                         </div>
                     </div>
                     <a href="https://wa.me/6283199265438" class="btn">BELI</a>
@@ -195,16 +266,16 @@
             <!-- Stock 3 -->
             <div class="stock-item">
                 <span class="stock-ready">STOCK READY✅</span>
-                <img src="https://i.supaimg.com/5776e0a4-8ddb-4f1f-8267-b2672ca30ed3.jpg" alt="STOCK 3" class="stock-image">
+                <img src="https://i.supaimg.com/5776e0a4-8ddb-4f1f-8267-b2672ca30ed3.jpg" alt="STOCK 3" class="stock-image" onclick="openModal(this.src)">
                 <div class="stock-details">
                     <div class="stock-header">
                         <div class="stock-name">STOCK 3</div>
                         <div class="stock-price">Rp 35.000</div>
                     </div>
-                    <div class="specs-container">
-                        <div class="specs-title">Spek Lengkap:</div>
+                    <div class="specs-toggle" onclick="toggleSpecs(this)">Spek Lengkap</div>
+                    <div class="specs-content">
                         <div class="specs-scroll">
-                            <img src="https://i.supaimg.com/5776e0a4-8ddb-4f1f-8267-b2672ca30ed3.jpg">
+                            <img src="https://i.supaimg.com/5776e0a4-8ddb-4f1f-8267-b2672ca30ed3.jpg" onclick="openModal(this.src)">
                         </div>
                     </div>
                     <a href="https://wa.me/6283199265438" class="btn">BELI</a>
@@ -214,16 +285,16 @@
             <!-- Stock 4 -->
             <div class="stock-item">
                 <span class="stock-ready">STOCK READY✅</span>
-                <img src="https://i.supaimg.com/fd3e1e99-6880-4be8-82a6-7d6144ef0882.jpg" alt="STOCK 4" class="stock-image">
+                <img src="https://i.supaimg.com/fd3e1e99-6880-4be8-82a6-7d6144ef0882.jpg" alt="STOCK 4" class="stock-image" onclick="openModal(this.src)">
                 <div class="stock-details">
                     <div class="stock-header">
                         <div class="stock-name">STOCK 4</div>
                         <div class="stock-price">Rp 20.000</div>
                     </div>
-                    <div class="specs-container">
-                        <div class="specs-title">Spek Lengkap:</div>
+                    <div class="specs-toggle" onclick="toggleSpecs(this)">Spek Lengkap</div>
+                    <div class="specs-content">
                         <div class="specs-scroll">
-                            <img src="https://i.supaimg.com/fd3e1e99-6880-4be8-82a6-7d6144ef0882.jpg">
+                            <img src="https://i.supaimg.com/fd3e1e99-6880-4be8-82a6-7d6144ef0882.jpg" onclick="openModal(this.src)">
                         </div>
                     </div>
                     <a href="https://wa.me/6283199265438" class="btn">BELI</a>
@@ -235,5 +306,46 @@
             <a href="https://whatsapp.com/channel/0029Vb5lGPpBA1f6JBGDmP18" target="_blank">Lihat Testimoni Pelanggan Kami</a>
         </div>
     </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" class="modal-img" src="">
+        </div>
+    </div>
+
+    <script>
+        // Toggle specs visibility
+        function toggleSpecs(button) {
+            const content = button.nextElementSibling;
+            button.classList.toggle('active');
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+            } else {
+                content.style.display = 'block';
+            }
+        }
+
+        // Modal functions
+        function openModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImg.src = src;
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside image
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
