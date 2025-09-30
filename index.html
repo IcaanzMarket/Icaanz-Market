@@ -219,6 +219,7 @@
             height: 100px;
             border-radius: 4px;
             overflow: hidden;
+            border: 1px solid #ddd;
         }
 
         .image-preview img {
@@ -656,19 +657,23 @@
                 <div class="image-upload-group">
                     <input type="file" id="image-upload" accept="image/*" multiple style="display: none;">
                     <button type="button" class="image-upload-btn" id="image-upload-btn">Pilih Gambar dari Galeri</button>
+                    <small style="color: #666; text-align: center;">Pilih satu atau beberapa gambar</small>
                 </div>
                 
                 <div class="image-preview-container" id="image-preview-container">
                     <!-- Preview gambar akan ditampilkan di sini -->
                 </div>
                 
-                <button type="submit">Tambah Stok</button>
+                <button type="submit" id="submit-stock-btn">Tambah Stok</button>
             </form>
 
             <div class="admin-stock-list" id="admin-stock-list" style="display: none;">
                 <h3>Kelola Stok</h3>
                 <div id="admin-stock-items">
-                    <!-- Daftar stok untuk admin akan ditampilkan di sini -->
+                    <div class="empty-state">
+                        <h3>Belum ada stok</h3>
+                        <p>Tambah stok baru menggunakan form di atas</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -734,7 +739,7 @@
             <div class="footer-content">
                 <div class="footer-logo">ICAANZ DA WERTZ</div>
                 <p class="footer-text">Platform terpercaya untuk mendapatkan akun berkualitas</p>
-                <p class="footer-text">&copy; 2023 ICAANZ DA WERTZ. All rights reserved.</p>
+                <p class="footer-text">&copy; 2025 ICAANZ DA WERTZ. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -748,6 +753,7 @@
         const pinInput = document.getElementById('pin-input');
         const pinSubmit = document.getElementById('pin-submit');
         const addStockForm = document.getElementById('add-stock-form');
+        const submitStockBtn = document.getElementById('submit-stock-btn');
         const freeFireStock = document.getElementById('free-fire-stock');
         const mobileLegendStock = document.getElementById('mobile-legend-stock');
         const robloxStock = document.getElementById('roblox-stock');
@@ -835,6 +841,8 @@
         imageUploadInput.addEventListener('change', function(e) {
             const files = e.target.files;
             
+            if (files.length === 0) return;
+            
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 
@@ -850,6 +858,8 @@
                     };
                     
                     reader.readAsDataURL(file);
+                } else {
+                    showNotification('Hanya file gambar yang diizinkan!', 'error');
                 }
             }
             
@@ -857,19 +867,44 @@
             imageUploadInput.value = '';
         });
 
-        // Event listener untuk form tambah stok
+        // Event listener untuk form tambah stok - FIXED
         addStockForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const title = document.getElementById('stock-title').value;
-            const description = document.getElementById('stock-description').value;
-            const price = document.getElementById('stock-price').value;
+            const title = document.getElementById('stock-title').value.trim();
+            const description = document.getElementById('stock-description').value.trim();
+            const price = document.getElementById('stock-price').value.trim();
             const category = document.getElementById('stock-category').value;
+            
+            // Validasi form
+            if (!title) {
+                showNotification('Judul akun harus diisi!', 'error');
+                return;
+            }
+            
+            if (!description) {
+                showNotification('Deskripsi akun harus diisi!', 'error');
+                return;
+            }
+            
+            if (!price) {
+                showNotification('Harga akun harus diisi!', 'error');
+                return;
+            }
+            
+            if (!category) {
+                showNotification('Kategori akun harus dipilih!', 'error');
+                return;
+            }
             
             if (uploadedImages.length === 0) {
                 showNotification('Minimal tambahkan satu gambar!', 'error');
                 return;
             }
+            
+            // Nonaktifkan tombol sementara untuk mencegah double click
+            submitStockBtn.disabled = true;
+            submitStockBtn.textContent = 'Menambahkan...';
             
             // Tambah stok baru
             const newStock = {
@@ -881,8 +916,11 @@
                 images: [...uploadedImages] // Salin array gambar
             };
             
+            // Simpan ke localStorage
             stockData.push(newStock);
             saveToLocalStorage();
+            
+            // Update tampilan
             displayStocks();
             displayAdminStocks();
             
@@ -890,6 +928,10 @@
             addStockForm.reset();
             imagePreviewContainer.innerHTML = '';
             uploadedImages = [];
+            
+            // Aktifkan kembali tombol
+            submitStockBtn.disabled = false;
+            submitStockBtn.textContent = 'Tambah Stok';
             
             showNotification('Stok berhasil ditambahkan!');
         });
