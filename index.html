@@ -257,6 +257,43 @@
             cursor: pointer;
         }
 
+        /* Admin Stock List */
+        .admin-stock-list {
+            margin-top: 30px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+
+        .admin-stock-list h3 {
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .admin-stock-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .admin-stock-info {
+            flex: 1;
+        }
+
+        .admin-stock-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .admin-stock-description {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
         .delete-stock-btn {
             padding: 8px 15px;
             background-color: var(--danger-color);
@@ -266,7 +303,6 @@
             cursor: pointer;
             transition: var(--transition);
             font-size: 0.9rem;
-            margin-top: 10px;
         }
 
         .delete-stock-btn:hover {
@@ -521,6 +557,16 @@
             .stock-grid {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
+
+            .admin-stock-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .delete-stock-btn {
+                margin-top: 10px;
+                align-self: flex-end;
+            }
         }
     </style>
 </head>
@@ -568,6 +614,13 @@
                 
                 <button type="submit">Tambah Stok</button>
             </form>
+
+            <div class="admin-stock-list" id="admin-stock-list" style="display: none;">
+                <h3>Kelola Stok</h3>
+                <div id="admin-stock-items">
+                    <!-- Daftar stok untuk admin akan ditampilkan di sini -->
+                </div>
+            </div>
         </section>
 
         <section class="stock-section" id="stock-section">
@@ -648,6 +701,8 @@
         const imageIndicator = document.getElementById('image-indicator');
         const addImageBtn = document.getElementById('add-image-btn');
         const imagePreviewContainer = document.getElementById('image-preview-container');
+        const adminStockList = document.getElementById('admin-stock-list');
+        const adminStockItems = document.getElementById('admin-stock-items');
         const navLinks = document.querySelectorAll('.nav-link');
 
         // Variabel untuk modal gambar
@@ -684,7 +739,9 @@
         pinSubmit.addEventListener('click', function() {
             if (pinInput.value === ADMIN_PIN) {
                 addStockForm.style.display = 'grid';
+                adminStockList.style.display = 'block';
                 pinInput.value = '';
+                displayAdminStocks();
                 alert('Akses admin berhasil!');
             } else {
                 alert('PIN salah! Coba lagi.');
@@ -735,6 +792,7 @@
             
             stockData.push(newStock);
             displayStocks();
+            displayAdminStocks();
             saveToLocalStorage();
             
             // Reset form
@@ -761,7 +819,7 @@
             imagePreviewContainer.appendChild(imagePreview);
         }
 
-        // Fungsi untuk menampilkan stok
+        // Fungsi untuk menampilkan stok di halaman publik
         function displayStocks() {
             stockGrid.innerHTML = '';
             
@@ -777,7 +835,6 @@
                         <h3 class="stock-title">${stock.title}</h3>
                         <p class="stock-description">${stock.description}</p>
                         <a href="https://wa.me/6283199265399" class="contact-admin" target="_blank">HUBUNGI ADMIN</a>
-                        <button class="delete-stock-btn" data-id="${stock.id}">Hapus Stok</button>
                     </div>
                 `;
                 
@@ -787,14 +844,34 @@
                     openImageModal(stock.images, 0);
                 });
                 
+                stockGrid.appendChild(stockItem);
+            });
+        }
+
+        // Fungsi untuk menampilkan stok di panel admin
+        function displayAdminStocks() {
+            adminStockItems.innerHTML = '';
+            
+            stockData.forEach(stock => {
+                const adminStockItem = document.createElement('div');
+                adminStockItem.className = 'admin-stock-item';
+                adminStockItem.innerHTML = `
+                    <div class="admin-stock-info">
+                        <div class="admin-stock-title">${stock.title}</div>
+                        <div class="admin-stock-description">${stock.description}</div>
+                        <div class="admin-stock-description">Jumlah Gambar: ${stock.images.length}</div>
+                    </div>
+                    <button class="delete-stock-btn" data-id="${stock.id}">Hapus Stok</button>
+                `;
+                
                 // Event listener untuk tombol hapus stok
-                const deleteBtn = stockItem.querySelector('.delete-stock-btn');
+                const deleteBtn = adminStockItem.querySelector('.delete-stock-btn');
                 deleteBtn.addEventListener('click', function() {
                     const stockId = parseInt(this.getAttribute('data-id'));
                     deleteStock(stockId);
                 });
                 
-                stockGrid.appendChild(stockItem);
+                adminStockItems.appendChild(adminStockItem);
             });
         }
 
@@ -859,6 +936,7 @@
             if (confirm('Apakah Anda yakin ingin menghapus stok ini?')) {
                 stockData = stockData.filter(stock => stock.id !== stockId);
                 displayStocks();
+                displayAdminStocks();
                 saveToLocalStorage();
                 alert('Stok berhasil dihapus!');
             }
