@@ -10,6 +10,8 @@
             --secondary-color: #f8f9fa;
             --accent-color: #e9ecef;
             --text-color: #333333;
+            --danger-color: #e74c3c;
+            --success-color: #2ecc71;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             --transition: all 0.3s ease;
         }
@@ -194,6 +196,83 @@
             background-color: #555;
         }
 
+        .image-input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .image-input-group input {
+            flex: 1;
+        }
+
+        .add-image-btn {
+            padding: 10px 15px;
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .add-image-btn:hover {
+            background-color: #27ae60;
+        }
+
+        .image-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .image-preview {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .delete-stock-btn {
+            padding: 8px 15px;
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .delete-stock-btn:hover {
+            background-color: #c0392b;
+        }
+
         /* Stock Grid Styles */
         .stock-section h2 {
             margin-bottom: 30px;
@@ -215,6 +294,7 @@
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            position: relative;
         }
 
         .stock-item:hover {
@@ -222,11 +302,30 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
         }
 
-        .stock-image {
+        .stock-image-container {
+            position: relative;
             height: 200px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .stock-image {
+            height: 100%;
             width: 100%;
             object-fit: cover;
             cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .image-counter {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
         }
 
         .stock-details {
@@ -299,6 +398,34 @@
             display: block;
         }
 
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 20px;
+        }
+
+        .modal-nav-btn {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-nav-btn:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
         .close-modal {
             position: absolute;
             top: 15px;
@@ -318,6 +445,29 @@
 
         .close-modal:hover {
             background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .image-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .indicator-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .indicator-dot.active {
+            background-color: white;
         }
 
         /* Footer Styles */
@@ -406,7 +556,16 @@
             <form class="add-stock-form" id="add-stock-form" style="display: none;">
                 <input type="text" id="stock-title" placeholder="Judul Akun" required>
                 <textarea id="stock-description" placeholder="Deskripsi Akun" rows="4" required></textarea>
-                <input type="url" id="stock-image" placeholder="URL Gambar" required>
+                
+                <div class="image-input-group">
+                    <input type="url" id="stock-image" placeholder="URL Gambar">
+                    <button type="button" class="add-image-btn" id="add-image-btn">Tambah Gambar</button>
+                </div>
+                
+                <div class="image-preview-container" id="image-preview-container">
+                    <!-- Preview gambar akan ditampilkan di sini -->
+                </div>
+                
                 <button type="submit">Tambah Stok</button>
             </form>
         </section>
@@ -422,7 +581,14 @@
     <div class="modal" id="image-modal">
         <div class="modal-content">
             <span class="close-modal" id="close-modal">&times;</span>
+            <div class="modal-nav">
+                <div class="modal-nav-btn" id="prev-image">&lt;</div>
+                <div class="modal-nav-btn" id="next-image">&gt;</div>
+            </div>
             <img src="" alt="Gambar Stok" class="modal-image" id="modal-image">
+            <div class="image-indicator" id="image-indicator">
+                <!-- Indicator dots akan ditampilkan di sini -->
+            </div>
         </div>
     </div>
 
@@ -437,25 +603,34 @@
     </footer>
 
     <script>
-        // Data contoh stok
-        let stockData = [
+        // Data stok dengan localStorage
+        let stockData = JSON.parse(localStorage.getItem('stockData')) || [
             {
                 id: 1,
                 title: "Akun Premium Game A",
                 description: "Akun premium dengan semua fitur unlocked. Level 50 dengan item langka.",
-                image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                images: [
+                    "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                    "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                ]
             },
             {
                 id: 2,
                 title: "Akun Streaming B",
                 description: "Akun streaming premium dengan akses ke semua konten eksklusif.",
-                image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                images: [
+                    "https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                ]
             },
             {
                 id: 3,
                 title: "Akun Software C",
                 description: "Akun software lengkap dengan lisensi premium dan update terbaru.",
-                image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                images: [
+                    "https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                    "https://images.unsplash.com/photo-1563207153-f403bf289096?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                    "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                ]
             }
         ];
 
@@ -468,7 +643,16 @@
         const imageModal = document.getElementById('image-modal');
         const modalImage = document.getElementById('modal-image');
         const closeModal = document.getElementById('close-modal');
+        const prevImageBtn = document.getElementById('prev-image');
+        const nextImageBtn = document.getElementById('next-image');
+        const imageIndicator = document.getElementById('image-indicator');
+        const addImageBtn = document.getElementById('add-image-btn');
+        const imagePreviewContainer = document.getElementById('image-preview-container');
         const navLinks = document.querySelectorAll('.nav-link');
+
+        // Variabel untuk modal gambar
+        let currentImageIndex = 0;
+        let currentStockImages = [];
 
         // PIN untuk akses admin
         const ADMIN_PIN = '40102726';
@@ -476,6 +660,7 @@
         // Tampilkan stok saat halaman dimuat
         document.addEventListener('DOMContentLoaded', function() {
             displayStocks();
+            saveToLocalStorage();
             
             // Event listener untuk navigasi
             navLinks.forEach(link => {
@@ -507,29 +692,74 @@
             }
         });
 
+        // Event listener untuk tombol tambah gambar
+        addImageBtn.addEventListener('click', function() {
+            const imageUrl = document.getElementById('stock-image').value.trim();
+            
+            if (imageUrl) {
+                addImagePreview(imageUrl);
+                document.getElementById('stock-image').value = '';
+            } else {
+                alert('Masukkan URL gambar terlebih dahulu!');
+            }
+        });
+
         // Event listener untuk form tambah stok
         addStockForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
             const title = document.getElementById('stock-title').value;
             const description = document.getElementById('stock-description').value;
-            const image = document.getElementById('stock-image').value;
+            
+            // Ambil semua gambar dari preview
+            const imagePreviews = document.querySelectorAll('.image-preview');
+            const images = [];
+            
+            imagePreviews.forEach(preview => {
+                const imgSrc = preview.querySelector('img').src;
+                images.push(imgSrc);
+            });
+            
+            if (images.length === 0) {
+                alert('Minimal tambahkan satu gambar!');
+                return;
+            }
             
             // Tambah stok baru
             const newStock = {
-                id: stockData.length + 1,
+                id: Date.now(), // ID unik berdasarkan timestamp
                 title: title,
                 description: description,
-                image: image
+                images: images
             };
             
             stockData.push(newStock);
             displayStocks();
+            saveToLocalStorage();
             
             // Reset form
             addStockForm.reset();
+            imagePreviewContainer.innerHTML = '';
             alert('Stok berhasil ditambahkan!');
         });
+
+        // Fungsi untuk menambahkan preview gambar
+        function addImagePreview(imageUrl) {
+            const imagePreview = document.createElement('div');
+            imagePreview.className = 'image-preview';
+            imagePreview.innerHTML = `
+                <img src="${imageUrl}" alt="Preview">
+                <div class="remove-image">&times;</div>
+            `;
+            
+            // Event listener untuk menghapus gambar
+            const removeBtn = imagePreview.querySelector('.remove-image');
+            removeBtn.addEventListener('click', function() {
+                imagePreview.remove();
+            });
+            
+            imagePreviewContainer.appendChild(imagePreview);
+        }
 
         // Fungsi untuk menampilkan stok
         function displayStocks() {
@@ -539,24 +769,78 @@
                 const stockItem = document.createElement('div');
                 stockItem.className = 'stock-item';
                 stockItem.innerHTML = `
-                    <img src="${stock.image}" alt="${stock.title}" class="stock-image">
+                    <div class="stock-image-container">
+                        <img src="${stock.images[0]}" alt="${stock.title}" class="stock-image">
+                        ${stock.images.length > 1 ? `<div class="image-counter">+${stock.images.length - 1}</div>` : ''}
+                    </div>
                     <div class="stock-details">
                         <h3 class="stock-title">${stock.title}</h3>
                         <p class="stock-description">${stock.description}</p>
                         <a href="https://wa.me/6283199265399" class="contact-admin" target="_blank">HUBUNGI ADMIN</a>
+                        <button class="delete-stock-btn" data-id="${stock.id}">Hapus Stok</button>
                     </div>
                 `;
                 
                 // Event listener untuk membuka modal gambar
                 const stockImage = stockItem.querySelector('.stock-image');
                 stockImage.addEventListener('click', function() {
-                    modalImage.src = stock.image;
-                    imageModal.classList.add('active');
+                    openImageModal(stock.images, 0);
+                });
+                
+                // Event listener untuk tombol hapus stok
+                const deleteBtn = stockItem.querySelector('.delete-stock-btn');
+                deleteBtn.addEventListener('click', function() {
+                    const stockId = parseInt(this.getAttribute('data-id'));
+                    deleteStock(stockId);
                 });
                 
                 stockGrid.appendChild(stockItem);
             });
         }
+
+        // Fungsi untuk membuka modal gambar
+        function openImageModal(images, startIndex = 0) {
+            currentStockImages = images;
+            currentImageIndex = startIndex;
+            
+            modalImage.src = currentStockImages[currentImageIndex];
+            imageModal.classList.add('active');
+            
+            updateImageIndicator();
+        }
+
+        // Fungsi untuk update indikator gambar
+        function updateImageIndicator() {
+            imageIndicator.innerHTML = '';
+            
+            currentStockImages.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.className = `indicator-dot ${index === currentImageIndex ? 'active' : ''}`;
+                dot.addEventListener('click', () => {
+                    currentImageIndex = index;
+                    modalImage.src = currentStockImages[currentImageIndex];
+                    updateImageIndicator();
+                });
+                imageIndicator.appendChild(dot);
+            });
+        }
+
+        // Event listener untuk navigasi gambar di modal
+        prevImageBtn.addEventListener('click', function() {
+            if (currentStockImages.length > 1) {
+                currentImageIndex = (currentImageIndex - 1 + currentStockImages.length) % currentStockImages.length;
+                modalImage.src = currentStockImages[currentImageIndex];
+                updateImageIndicator();
+            }
+        });
+
+        nextImageBtn.addEventListener('click', function() {
+            if (currentStockImages.length > 1) {
+                currentImageIndex = (currentImageIndex + 1) % currentStockImages.length;
+                modalImage.src = currentStockImages[currentImageIndex];
+                updateImageIndicator();
+            }
+        });
 
         // Event listener untuk menutup modal
         closeModal.addEventListener('click', function() {
@@ -569,6 +853,21 @@
                 imageModal.classList.remove('active');
             }
         });
+
+        // Fungsi untuk menghapus stok
+        function deleteStock(stockId) {
+            if (confirm('Apakah Anda yakin ingin menghapus stok ini?')) {
+                stockData = stockData.filter(stock => stock.id !== stockId);
+                displayStocks();
+                saveToLocalStorage();
+                alert('Stok berhasil dihapus!');
+            }
+        }
+
+        // Fungsi untuk menyimpan data ke localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('stockData', JSON.stringify(stockData));
+        }
     </script>
 </body>
 </html>
