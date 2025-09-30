@@ -1,351 +1,574 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STOCK ICAANZ</title>
+    <title>ICAANZ DA WERTZ - Stok Akun</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        :root {
+            --primary-color: #ffffff;
+            --secondary-color: #f8f9fa;
+            --accent-color: #e9ecef;
+            --text-color: #333333;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f5f9ff;
-            color: #333;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
+        body {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
         }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        nav ul li a:hover {
+            background-color: var(--accent-color);
+        }
+
+        /* Banner Styles */
         .banner {
-            width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-        h1 {
-            color: #1a73e8;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .stock-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            height: 400px;
+            background-image: url('https://i.supaimg.com/6b0f5aad-850f-4ced-918d-6ee087717f9e.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 40px;
+            position: relative;
         }
+
+        .banner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+        }
+
+        .banner h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .banner p {
+            font-size: 1.2rem;
+            max-width: 600px;
+        }
+
+        /* Admin Panel Styles */
+        .admin-panel {
+            background-color: var(--secondary-color);
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-panel h2 {
+            margin-bottom: 20px;
+            color: var(--text-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        .pin-form {
+            margin-bottom: 20px;
+        }
+
+        .pin-form input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 200px;
+            margin-right: 10px;
+        }
+
+        .pin-form button {
+            padding: 10px 20px;
+            background-color: var(--text-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .pin-form button:hover {
+            background-color: #555;
+        }
+
+        .add-stock-form {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .add-stock-form input,
+        .add-stock-form textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .add-stock-form button {
+            padding: 12px 20px;
+            background-color: var(--text-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .add-stock-form button:hover {
+            background-color: #555;
+        }
+
+        /* Stock Grid Styles */
+        .stock-section h2 {
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2rem;
+            color: var(--text-color);
+        }
+
+        .stock-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
         .stock-item {
             background-color: white;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: relative;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
+
+        .stock-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+
         .stock-image {
+            height: 200px;
             width: 100%;
-            height: 150px;
             object-fit: cover;
             cursor: pointer;
-            transition: transform 0.3s;
         }
-        .stock-image:hover {
-            transform: scale(1.02);
-        }
+
         .stock-details {
-            padding: 15px;
+            padding: 20px;
         }
-        .stock-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+
+        .stock-title {
+            font-size: 1.2rem;
+            font-weight: 600;
             margin-bottom: 10px;
         }
-        .stock-name {
-            font-weight: bold;
-            font-size: 16px;
-            color: #1a73e8;
+
+        .stock-description {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
         }
-        .stock-price {
-            font-size: 18px;
-            font-weight: bold;
-            color: #1a73e8;
-        }
-        .stock-ready {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #4CAF50;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        .btn {
+
+        .contact-admin {
             display: block;
-            padding: 8px 15px;
-            background-color: #1a73e8;
+            width: 100%;
+            padding: 10px;
+            background-color: #25D366;
             color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
             text-align: center;
-            margin-top: 15px;
-            transition: background-color 0.3s;
-            font-size: 14px;
-        }
-        .btn:hover {
-            background-color: #0d5bba;
-        }
-        .specs-toggle {
-            font-weight: bold;
-            margin: 10px 0 5px;
-            color: #1a73e8;
-            cursor: pointer;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-        }
-        .specs-toggle:after {
-            content: "+";
-            margin-left: 5px;
-            font-size: 18px;
-        }
-        .specs-toggle.active:after {
-            content: "-";
-        }
-        .specs-content {
-            display: none;
-            overflow: hidden;
-        }
-        .specs-scroll {
-            display: flex;
-            overflow-x: auto;
-            gap: 10px;
-            padding-bottom: 10px;
-            scroll-snap-type: x mandatory;
-        }
-        .specs-scroll img {
-            height: 100px;
-            scroll-snap-align: start;
-            border-radius: 5px;
-            flex-shrink: 0;
-            cursor: pointer;
-        }
-        .testimonial-link {
-            display: block;
-            text-align: center;
-            margin: 30px 0;
-            font-size: 18px;
-        }
-        .testimonial-link a {
-            color: #1a73e8;
             text-decoration: none;
-            font-weight: bold;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: var(--transition);
         }
-        .testimonial-link a:hover {
-            text-decoration: underline;
+
+        .contact-admin:hover {
+            background-color: #128C7E;
         }
-        /* Modal styles */
+
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
-            z-index: 100;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.9);
-            overflow: auto;
-        }
-        .modal-content {
-            display: flex;
-            flex-direction: column;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
             justify-content: center;
             align-items: center;
-            height: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .modal-img {
-            max-width: 90%;
-            max-height: 80vh;
-            object-fit: contain;
-        }
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 35px;
-            color: white;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .gallery-nav {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            gap: 10px;
-        }
-        .gallery-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #bbb;
-            cursor: pointer;
-        }
-        .gallery-dot.active {
-            background-color: #1a73e8;
-        }
-        /* Hide scrollbar but keep functionality */
-        .specs-scroll::-webkit-scrollbar {
-            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        @media (max-width: 600px) {
-            .stock-container {
-                grid-template-columns: 1fr;
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: var(--secondary-color);
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .footer-text {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 15px;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 0 10px;
+            }
+
+            .banner h1 {
+                font-size: 2.2rem;
+            }
+
+            .banner p {
+                font-size: 1rem;
+            }
+
+            .stock-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="https://i.supaimg.com/d2388873-432b-45e3-abf3-ba88801b5cdc.jpg" alt="STOCK ICAANZ Banner" class="banner">
-        <h1>STOCK ICAANZ</h1>
-        
-        <div class="stock-container">
-            <!-- Stock 1 -->
-            <div class="stock-item">
-                <span class="stock-ready">STOCK READY✅</span>
-                <img src="https://i.supaimg.com/c398d20c-eba7-4149-a109-746f2ae73ca9.jpg" alt="STOCK 1" class="stock-image" onclick="openModal(this.src)">
-                <div class="stock-details">
-                    <div class="stock-header">
-                        <div class="stock-name">STOCK 1</div>
-                        <div class="stock-price">Rp 120.000</div>
-                    </div>
-                    <div class="specs-toggle" onclick="toggleSpecs(this)">Spek Lengkap</div>
-                    <div class="specs-content">
-                        <div class="specs-scroll">
-                            <img src="https://i.supaimg.com/c398d20c-eba7-4149-a109-746f2ae73ca9.jpg" onclick="openModal(this.src)">
-                            <img src="https://i.supaimg.com/a46560b6-88b5-4e1c-80f7-16a53810b223.jpg" onclick="openModal(this.src)">
-                            <img src="https://i.supaimg.com/f3a3331f-095e-4491-b27b-2073d901eedb.jpg" onclick="openModal(this.src)">
-                            <img src="https://i.supaimg.com/8f51ebb3-ca6a-4c9a-82a4-79e68dcd9121.jpg" onclick="openModal(this.src)">
-                            <img src="https://i.supaimg.com/71ee2fde-7e5f-4065-949f-11b59bcec533.jpg" onclick="openModal(this.src)">
-                            <img src="https://i.supaimg.com/35974f91-b83d-4b86-8da0-2f143d3f2901.jpg" onclick="openModal(this.src)">
-                            <img src="https://i.supaimg.com/682ec652-6813-4311-89b4-bec2a9ea00f2.jpg" onclick="openModal(this.src)">
-                            <img src="https://i.supaimg.com/df38aea2-6c66-4898-b718-39a0032e4029.jpg" onclick="openModal(this.src)">
-                            <img src="https://i.supaimg.com/3beaf32a-3d30-4aae-ad0e-39ef5b5ecbe6.jpg" onclick="openModal(this.src)">
-                        </div>
-                    </div>
-                    <a href="https://wa.me/6283199265438" class="btn">BELI</a>
-                </div>
-            </div>
-            
-            <!-- Stock 2 -->
-            <div class="stock-item">
-                <span class="stock-ready">STOCK READY✅</span>
-                <img src="https://i.supaimg.com/a0fcb800-b1cf-4196-80c5-e92d60be3c3b.jpg" alt="STOCK 2" class="stock-image" onclick="openModal(this.src)">
-                <div class="stock-details">
-                    <div class="stock-header">
-                        <div class="stock-name">STOCK 2</div>
-                        <div class="stock-price">Rp 70.000</div>
-                    </div>
-                    <div class="specs-toggle" onclick="toggleSpecs(this)">Spek Lengkap</div>
-                    <div class="specs-content">
-                        <div class="specs-scroll">
-                            <img src="https://i.supaimg.com/a0fcb800-b1cf-4196-80c5-e92d60be3c3b.jpg" onclick="openModal(this.src)">
-                        </div>
-                    </div>
-                    <a href="https://wa.me/6283199265438" class="btn">BELI</a>
-                </div>
-            </div>
-            
-            <!-- Stock 3 -->
-            <div class="stock-item">
-                <span class="stock-ready">STOCK READY✅</span>
-                <img src="https://i.supaimg.com/5776e0a4-8ddb-4f1f-8267-b2672ca30ed3.jpg" alt="STOCK 3" class="stock-image" onclick="openModal(this.src)">
-                <div class="stock-details">
-                    <div class="stock-header">
-                        <div class="stock-name">STOCK 3</div>
-                        <div class="stock-price">Rp 35.000</div>
-                    </div>
-                    <div class="specs-toggle" onclick="toggleSpecs(this)">Spek Lengkap</div>
-                    <div class="specs-content">
-                        <div class="specs-scroll">
-                            <img src="https://i.supaimg.com/5776e0a4-8ddb-4f1f-8267-b2672ca30ed3.jpg" onclick="openModal(this.src)">
-                        </div>
-                    </div>
-                    <a href="https://wa.me/6283199265438" class="btn">BELI</a>
-                </div>
-            </div>
-            
-            <!-- Stock 4 -->
-            <div class="stock-item">
-                <span class="stock-ready">STOCK READY✅</span>
-                <img src="https://i.supaimg.com/fd3e1e99-6880-4be8-82a6-7d6144ef0882.jpg" alt="STOCK 4" class="stock-image" onclick="openModal(this.src)">
-                <div class="stock-details">
-                    <div class="stock-header">
-                        <div class="stock-name">STOCK 4</div>
-                        <div class="stock-price">Rp 20.000</div>
-                    </div>
-                    <div class="specs-toggle" onclick="toggleSpecs(this)">Spek Lengkap</div>
-                    <div class="specs-content">
-                        <div class="specs-scroll">
-                            <img src="https://i.supaimg.com/fd3e1e99-6880-4be8-82a6-7d6144ef0882.jpg" onclick="openModal(this.src)">
-                        </div>
-                    </div>
-                    <a href="https://wa.me/6283199265438" class="btn">BELI</a>
-                </div>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">ICAANZ DA WERTZ</div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="nav-link" data-target="stock-section">Stok</a></li>
+                        <li><a href="#" class="nav-link" data-target="admin-panel">Admin</a></li>
+                    </ul>
+                </nav>
             </div>
         </div>
-        
-        <div class="testimonial-link">
-            <a href="https://whatsapp.com/channel/0029Vb5lGPpBA1f6JBGDmP18" target="_blank">Lihat Testimoni Pelanggan Kami</a>
+    </header>
+
+    <div class="banner">
+        <div class="banner-content">
+            <h1>ICAANZ DA WERTZ</h1>
+            <p>Temukan akun berkualitas dengan harga terbaik</p>
         </div>
     </div>
 
-    <!-- Image Modal -->
-    <div id="imageModal" class="modal">
-        <span class="close" onclick="closeModal()">&times;</span>
+    <div class="container">
+        <section class="admin-panel" id="admin-panel">
+            <h2>Panel Admin</h2>
+            <div class="pin-form">
+                <input type="password" id="pin-input" placeholder="Masukkan PIN">
+                <button id="pin-submit">Akses</button>
+            </div>
+            <form class="add-stock-form" id="add-stock-form" style="display: none;">
+                <input type="text" id="stock-title" placeholder="Judul Akun" required>
+                <textarea id="stock-description" placeholder="Deskripsi Akun" rows="4" required></textarea>
+                <input type="url" id="stock-image" placeholder="URL Gambar" required>
+                <button type="submit">Tambah Stok</button>
+            </form>
+        </section>
+
+        <section class="stock-section" id="stock-section">
+            <h2>Stok Akun Tersedia</h2>
+            <div class="stock-grid" id="stock-grid">
+                <!-- Stok akan ditampilkan di sini -->
+            </div>
+        </section>
+    </div>
+
+    <div class="modal" id="image-modal">
         <div class="modal-content">
-            <img id="modalImage" class="modal-img" src="">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <img src="" alt="Gambar Stok" class="modal-image" id="modal-image">
         </div>
     </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">ICAANZ DA WERTZ</div>
+                <p class="footer-text">Platform terpercaya untuk mendapatkan akun berkualitas</p>
+                <p class="footer-text">&copy; 2023 ICAANZ DA WERTZ. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        // Toggle specs visibility
-        function toggleSpecs(button) {
-            const content = button.nextElementSibling;
-            button.classList.toggle('active');
-            if (content.style.display === 'block') {
-                content.style.display = 'none';
+        // Data contoh stok
+        let stockData = [
+            {
+                id: 1,
+                title: "Akun Premium Game A",
+                description: "Akun premium dengan semua fitur unlocked. Level 50 dengan item langka.",
+                image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            },
+            {
+                id: 2,
+                title: "Akun Streaming B",
+                description: "Akun streaming premium dengan akses ke semua konten eksklusif.",
+                image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            },
+            {
+                id: 3,
+                title: "Akun Software C",
+                description: "Akun software lengkap dengan lisensi premium dan update terbaru.",
+                image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            }
+        ];
+
+        // DOM Elements
+        const adminPanel = document.getElementById('admin-panel');
+        const pinInput = document.getElementById('pin-input');
+        const pinSubmit = document.getElementById('pin-submit');
+        const addStockForm = document.getElementById('add-stock-form');
+        const stockGrid = document.getElementById('stock-grid');
+        const imageModal = document.getElementById('image-modal');
+        const modalImage = document.getElementById('modal-image');
+        const closeModal = document.getElementById('close-modal');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        // PIN untuk akses admin
+        const ADMIN_PIN = '40102726';
+
+        // Tampilkan stok saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            displayStocks();
+            
+            // Event listener untuk navigasi
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('data-target');
+                    const targetSection = document.getElementById(targetId);
+                    
+                    if (targetId === 'admin-panel') {
+                        adminPanel.classList.add('active');
+                        document.getElementById('stock-section').scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        adminPanel.classList.remove('active');
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+
+        // Event listener untuk PIN submit
+        pinSubmit.addEventListener('click', function() {
+            if (pinInput.value === ADMIN_PIN) {
+                addStockForm.style.display = 'grid';
+                pinInput.value = '';
+                alert('Akses admin berhasil!');
             } else {
-                content.style.display = 'block';
+                alert('PIN salah! Coba lagi.');
+                pinInput.value = '';
             }
+        });
+
+        // Event listener untuk form tambah stok
+        addStockForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('stock-title').value;
+            const description = document.getElementById('stock-description').value;
+            const image = document.getElementById('stock-image').value;
+            
+            // Tambah stok baru
+            const newStock = {
+                id: stockData.length + 1,
+                title: title,
+                description: description,
+                image: image
+            };
+            
+            stockData.push(newStock);
+            displayStocks();
+            
+            // Reset form
+            addStockForm.reset();
+            alert('Stok berhasil ditambahkan!');
+        });
+
+        // Fungsi untuk menampilkan stok
+        function displayStocks() {
+            stockGrid.innerHTML = '';
+            
+            stockData.forEach(stock => {
+                const stockItem = document.createElement('div');
+                stockItem.className = 'stock-item';
+                stockItem.innerHTML = `
+                    <img src="${stock.image}" alt="${stock.title}" class="stock-image">
+                    <div class="stock-details">
+                        <h3 class="stock-title">${stock.title}</h3>
+                        <p class="stock-description">${stock.description}</p>
+                        <a href="https://wa.me/6283199265399" class="contact-admin" target="_blank">HUBUNGI ADMIN</a>
+                    </div>
+                `;
+                
+                // Event listener untuk membuka modal gambar
+                const stockImage = stockItem.querySelector('.stock-image');
+                stockImage.addEventListener('click', function() {
+                    modalImage.src = stock.image;
+                    imageModal.classList.add('active');
+                });
+                
+                stockGrid.appendChild(stockItem);
+            });
         }
 
-        // Modal functions
-        function openModal(src) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
-            modal.style.display = 'block';
-            modalImg.src = src;
-        }
+        // Event listener untuk menutup modal
+        closeModal.addEventListener('click', function() {
+            imageModal.classList.remove('active');
+        });
 
-        function closeModal() {
-            document.getElementById('imageModal').style.display = 'none';
-        }
-
-        // Close modal when clicking outside image
-        window.onclick = function(event) {
-            const modal = document.getElementById('imageModal');
-            if (event.target === modal) {
-                modal.style.display = 'none';
+        // Tutup modal jika klik di luar gambar
+        imageModal.addEventListener('click', function(e) {
+            if (e.target === imageModal) {
+                imageModal.classList.remove('active');
             }
-        }
+        });
     </script>
 </body>
 </html>
