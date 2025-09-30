@@ -568,6 +568,21 @@
             transform: translateX(0);
         }
 
+        .notification.error {
+            background-color: var(--danger-color);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+        }
+
         /* Responsive Styles */
         @media (max-width: 768px) {
             .header-content {
@@ -669,19 +684,28 @@
             
             <div class="stock-category active" id="free-fire-category">
                 <div class="stock-grid" id="free-fire-stock">
-                    <!-- Stok Free Fire akan ditampilkan di sini -->
+                    <div class="empty-state">
+                        <h3>Belum ada stok</h3>
+                        <p>Stok untuk kategori ini akan muncul di sini</p>
+                    </div>
                 </div>
             </div>
             
             <div class="stock-category" id="mobile-legend-category">
                 <div class="stock-grid" id="mobile-legend-stock">
-                    <!-- Stok Mobile Legend akan ditampilkan di sini -->
+                    <div class="empty-state">
+                        <h3>Belum ada stok</h3>
+                        <p>Stok untuk kategori ini akan muncul di sini</p>
+                    </div>
                 </div>
             </div>
             
             <div class="stock-category" id="roblox-category">
                 <div class="stock-grid" id="roblox-stock">
-                    <!-- Stok Roblox akan ditampilkan di sini -->
+                    <div class="empty-state">
+                        <h3>Belum ada stok</h3>
+                        <p>Stok untuk kategori ini akan muncul di sini</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -716,131 +740,8 @@
     </footer>
 
     <script>
-        // Data stok dengan localStorage
-        let stockData = JSON.parse(localStorage.getItem('stockData')) || [
-            {
-                id: 1,
-                title: "Akun Free Fire Legend",
-                description: "Akun FF dengan skin langka dan level maksimal. Dilengkapi dengan 50+ karakter dan item eksklusif.",
-                price: "2.5JT",
-                category: "free-fire",
-                images: [
-                    "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-                    "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                ]
-            },
-            {
-                id: 2,
-                title: "Akun Free Fire Pro",
-                description: "Akun FF dengan 30 skin hero dan rank Mythic. Sudah memiliki semua senjata legendary.",
-                price: "1.8JT",
-                category: "free-fire",
-                images: [
-                    "https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                ]
-            },
-            {
-                id: 3,
-                title: "Akun Free Fire Medium",
-                description: "Akun FF dengan 15 skin dan rank Grandmaster. Sudah memiliki diamond 10K.",
-                price: "750K",
-                category: "free-fire",
-                images: [
-                    "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                ]
-            },
-            {
-                id: 4,
-                title: "Akun Free Fire Basic",
-                description: "Akun FF dengan 5 skin dan rank Epic. Cocok untuk pemula.",
-                price: "350K",
-                category: "free-fire",
-                images: [
-                    "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                ]
-            },
-            {
-                id: 5,
-                title: "Akun ML Legend",
-                description: "Akun Mobile Legend dengan 100+ skin hero dan rank Mythic Glory. Semua emblem max level.",
-                price: "3JT",
-                category: "mobile-legend",
-                images: [
-                    "https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                ]
-            },
-            {
-                id: 6,
-                title: "Akun ML Pro",
-                description: "Akun ML dengan 50 skin hero dan rank Mythic. Dilengkapi dengan 5 skin collector.",
-                price: "1.5JT",
-                category: "mobile-legend",
-                images: [
-                    "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                ]
-            },
-            {
-                id: 7,
-                title: "Akun ML Medium",
-                description: "Akun ML dengan 20 skin dan rank Legend. Sudah memiliki 30K diamond.",
-                price: "800K",
-                category: "mobile-legend",
-                images: [
-                    "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                ]
-            },
-            {
-                id: 8,
-                title: "Akun ML Basic",
-                description: "Akun ML dengan 10 skin dan rank Epic. Cocok untuk pemula.",
-                price: "400K",
-                category: "mobile-legend",
-                images: [
-                    "https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                ]
-            },
-            {
-                id: 9,
-                title: "Akun Roblox Premium",
-                description: "Akun Roblox dengan 100K robux dan semua game pass. Sudah memiliki limited items langka.",
-                price: "2JT",
-                category: "roblox",
-                images: [
-                    "https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-                    "https://images.unsplash.com/photo-1563207153-f403bf289096?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                ]
-            },
-            {
-                id: 10,
-                title: "Akun Roblox Pro",
-                description: "Akun Roblox dengan 50K robux dan 20 game pass. Sudah memiliki beberapa limited items.",
-                price: "1.2JT",
-                category: "roblox",
-                images: [
-                    "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                ]
-            },
-            {
-                id: 11,
-                title: "Akun Roblox Medium",
-                description: "Akun Roblox dengan 25K robux dan 10 game pass. Sudah memiliki beberapa item eksklusif.",
-                price: "600K",
-                category: "roblox",
-                images: [
-                    "https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                ]
-            },
-            {
-                id: 12,
-                title: "Akun Roblox Basic",
-                description: "Akun Roblox dengan 10K robux dan 5 game pass. Cocok untuk pemula.",
-                price: "300K",
-                category: "roblox",
-                images: [
-                    "https://images.unsplash.com/photo-1563207153-f403bf289096?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                ]
-            }
-        ];
+        // Data stok dengan localStorage - tanpa contoh stok
+        let stockData = JSON.parse(localStorage.getItem('stockData')) || [];
 
         // DOM Elements
         const adminPanel = document.getElementById('admin-panel');
@@ -877,7 +778,6 @@
         // Tampilkan stok saat halaman dimuat
         document.addEventListener('DOMContentLoaded', function() {
             displayStocks();
-            saveToLocalStorage();
             
             // Event listener untuk navigasi
             navLinks.forEach(link => {
@@ -982,9 +882,9 @@
             };
             
             stockData.push(newStock);
+            saveToLocalStorage();
             displayStocks();
             displayAdminStocks();
-            saveToLocalStorage();
             
             // Reset form
             addStockForm.reset();
@@ -1024,46 +924,68 @@
             mobileLegendStock.innerHTML = '';
             robloxStock.innerHTML = '';
             
+            // Filter stok berdasarkan kategori
+            const freeFireStocks = stockData.filter(stock => stock.category === 'free-fire');
+            const mobileLegendStocks = stockData.filter(stock => stock.category === 'mobile-legend');
+            const robloxStocks = stockData.filter(stock => stock.category === 'roblox');
+            
             // Urutkan stok berdasarkan harga (dari tertinggi ke terendah)
-            const sortedStockData = [...stockData].sort((a, b) => {
-                // Konversi harga ke angka untuk perbandingan
-                const priceA = convertPriceToNumber(a.price);
-                const priceB = convertPriceToNumber(b.price);
-                return priceB - priceA;
+            const sortedFreeFire = [...freeFireStocks].sort((a, b) => convertPriceToNumber(b.price) - convertPriceToNumber(a.price));
+            const sortedMobileLegend = [...mobileLegendStocks].sort((a, b) => convertPriceToNumber(b.price) - convertPriceToNumber(a.price));
+            const sortedRoblox = [...robloxStocks].sort((a, b) => convertPriceToNumber(b.price) - convertPriceToNumber(a.price));
+            
+            // Tampilkan stok Free Fire
+            if (sortedFreeFire.length > 0) {
+                sortedFreeFire.forEach(stock => {
+                    freeFireStock.appendChild(createStockItem(stock));
+                });
+            } else {
+                freeFireStock.innerHTML = '<div class="empty-state"><h3>Belum ada stok</h3><p>Stok untuk kategori ini akan muncul di sini</p></div>';
+            }
+            
+            // Tampilkan stok Mobile Legend
+            if (sortedMobileLegend.length > 0) {
+                sortedMobileLegend.forEach(stock => {
+                    mobileLegendStock.appendChild(createStockItem(stock));
+                });
+            } else {
+                mobileLegendStock.innerHTML = '<div class="empty-state"><h3>Belum ada stok</h3><p>Stok untuk kategori ini akan muncul di sini</p></div>';
+            }
+            
+            // Tampilkan stok Roblox
+            if (sortedRoblox.length > 0) {
+                sortedRoblox.forEach(stock => {
+                    robloxStock.appendChild(createStockItem(stock));
+                });
+            } else {
+                robloxStock.innerHTML = '<div class="empty-state"><h3>Belum ada stok</h3><p>Stok untuk kategori ini akan muncul di sini</p></div>';
+            }
+        }
+
+        // Fungsi untuk membuat elemen stok
+        function createStockItem(stock) {
+            const stockItem = document.createElement('div');
+            stockItem.className = 'stock-item';
+            stockItem.innerHTML = `
+                <div class="stock-image-container">
+                    <img src="${stock.images[0]}" alt="${stock.title}" class="stock-image">
+                    ${stock.images.length > 1 ? `<div class="image-counter">+${stock.images.length - 1}</div>` : ''}
+                </div>
+                <div class="stock-details">
+                    <h3 class="stock-title">${stock.title}</h3>
+                    <div class="stock-price">Rp ${stock.price}</div>
+                    <p class="stock-description">${stock.description}</p>
+                    <a href="https://wa.me/6283199265399" class="contact-admin" target="_blank">HUBUNGI ADMIN</a>
+                </div>
+            `;
+            
+            // Event listener untuk membuka modal gambar
+            const stockImage = stockItem.querySelector('.stock-image');
+            stockImage.addEventListener('click', function() {
+                openImageModal(stock.images, 0);
             });
             
-            // Tampilkan stok berdasarkan kategori
-            sortedStockData.forEach(stock => {
-                const stockItem = document.createElement('div');
-                stockItem.className = 'stock-item';
-                stockItem.innerHTML = `
-                    <div class="stock-image-container">
-                        <img src="${stock.images[0]}" alt="${stock.title}" class="stock-image">
-                        ${stock.images.length > 1 ? `<div class="image-counter">+${stock.images.length - 1}</div>` : ''}
-                    </div>
-                    <div class="stock-details">
-                        <h3 class="stock-title">${stock.title}</h3>
-                        <div class="stock-price">Rp ${stock.price}</div>
-                        <p class="stock-description">${stock.description}</p>
-                        <a href="https://wa.me/6283199265399" class="contact-admin" target="_blank">HUBUNGI ADMIN</a>
-                    </div>
-                `;
-                
-                // Event listener untuk membuka modal gambar
-                const stockImage = stockItem.querySelector('.stock-image');
-                stockImage.addEventListener('click', function() {
-                    openImageModal(stock.images, 0);
-                });
-                
-                // Tambahkan ke grid yang sesuai
-                if (stock.category === 'free-fire') {
-                    freeFireStock.appendChild(stockItem);
-                } else if (stock.category === 'mobile-legend') {
-                    mobileLegendStock.appendChild(stockItem);
-                } else if (stock.category === 'roblox') {
-                    robloxStock.appendChild(stockItem);
-                }
-            });
+            return stockItem;
         }
 
         // Fungsi untuk mengonversi harga string ke angka
@@ -1091,6 +1013,11 @@
         // Fungsi untuk menampilkan stok di panel admin
         function displayAdminStocks() {
             adminStockItems.innerHTML = '';
+            
+            if (stockData.length === 0) {
+                adminStockItems.innerHTML = '<div class="empty-state"><h3>Belum ada stok</h3><p>Tambah stok baru menggunakan form di atas</p></div>';
+                return;
+            }
             
             stockData.forEach(stock => {
                 const adminStockItem = document.createElement('div');
@@ -1175,9 +1102,9 @@
         function deleteStock(stockId) {
             if (confirm('Apakah Anda yakin ingin menghapus stok ini?')) {
                 stockData = stockData.filter(stock => stock.id !== stockId);
+                saveToLocalStorage();
                 displayStocks();
                 displayAdminStocks();
-                saveToLocalStorage();
                 showNotification('Stok berhasil dihapus!');
             }
         }
@@ -1192,9 +1119,9 @@
             notification.textContent = message;
             
             if (type === 'error') {
-                notification.style.backgroundColor = '#e74c3c';
+                notification.classList.add('error');
             } else {
-                notification.style.backgroundColor = '#2ecc71';
+                notification.classList.remove('error');
             }
             
             notification.classList.add('show');
@@ -1204,9 +1131,8 @@
             }, 3000);
         }
 
-        // Simulasi real-time update (setiap 5 detik)
+        // Real-time update dengan polling setiap 2 detik
         setInterval(function() {
-            // Periksa apakah ada perubahan di localStorage
             const savedData = localStorage.getItem('stockData');
             if (savedData) {
                 const parsedData = JSON.parse(savedData);
@@ -1222,7 +1148,7 @@
                     }
                 }
             }
-        }, 5000);
+        }, 2000);
     </script>
 </body>
 </html>
