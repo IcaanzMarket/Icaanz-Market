@@ -185,17 +185,13 @@
             background-color: #555;
         }
 
-        .image-input-group {
+        .image-upload-group {
             display: flex;
+            flex-direction: column;
             gap: 10px;
-            align-items: center;
         }
 
-        .image-input-group input {
-            flex: 1;
-        }
-
-        .add-image-btn {
+        .image-upload-btn {
             padding: 10px 15px;
             background-color: var(--success-color);
             color: white;
@@ -203,9 +199,10 @@
             border-radius: 4px;
             cursor: pointer;
             transition: var(--transition);
+            text-align: center;
         }
 
-        .add-image-btn:hover {
+        .image-upload-btn:hover {
             background-color: #27ae60;
         }
 
@@ -552,6 +549,25 @@
             margin-bottom: 20px;
         }
 
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: var(--success-color);
+            color: white;
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+            z-index: 1001;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
         /* Responsive Styles */
         @media (max-width: 768px) {
             .header-content {
@@ -622,9 +638,9 @@
                     <option value="roblox">Roblox</option>
                 </select>
                 
-                <div class="image-input-group">
-                    <input type="url" id="stock-image" placeholder="URL Gambar">
-                    <button type="button" class="add-image-btn" id="add-image-btn">Tambah Gambar</button>
+                <div class="image-upload-group">
+                    <input type="file" id="image-upload" accept="image/*" multiple style="display: none;">
+                    <button type="button" class="image-upload-btn" id="image-upload-btn">Pilih Gambar dari Galeri</button>
                 </div>
                 
                 <div class="image-preview-container" id="image-preview-container">
@@ -683,6 +699,10 @@
                 <!-- Indicator dots akan ditampilkan di sini -->
             </div>
         </div>
+    </div>
+
+    <div class="notification" id="notification">
+        Perubahan berhasil disimpan!
     </div>
 
     <footer>
@@ -836,17 +856,20 @@
         const prevImageBtn = document.getElementById('prev-image');
         const nextImageBtn = document.getElementById('next-image');
         const imageIndicator = document.getElementById('image-indicator');
-        const addImageBtn = document.getElementById('add-image-btn');
+        const imageUploadBtn = document.getElementById('image-upload-btn');
+        const imageUploadInput = document.getElementById('image-upload');
         const imagePreviewContainer = document.getElementById('image-preview-container');
         const adminStockList = document.getElementById('admin-stock-list');
         const adminStockItems = document.getElementById('admin-stock-items');
         const categoryTabs = document.querySelectorAll('.category-tab');
         const stockCategories = document.querySelectorAll('.stock-category');
         const navLinks = document.querySelectorAll('.nav-link');
+        const notification = document.getElementById('notification');
 
         // Variabel untuk modal gambar
         let currentImageIndex = 0;
         let currentStockImages = [];
+        let uploadedImages = [];
 
         // PIN untuk akses admin
         const ADMIN_PIN = '40102726';
@@ -896,23 +919,42 @@
                 adminStockList.style.display = 'block';
                 pinInput.value = '';
                 displayAdminStocks();
-                alert('Akses admin berhasil!');
+                showNotification('Akses admin berhasil!');
             } else {
-                alert('PIN salah! Coba lagi.');
+                showNotification('PIN salah! Coba lagi.', 'error');
                 pinInput.value = '';
             }
         });
 
-        // Event listener untuk tombol tambah gambar
-        addImageBtn.addEventListener('click', function() {
-            const imageUrl = document.getElementById('stock-image').value.trim();
+        // Event listener untuk tombol upload gambar
+        imageUploadBtn.addEventListener('click', function() {
+            imageUploadInput.click();
+        });
+
+        // Event listener untuk input file
+        imageUploadInput.addEventListener('change', function(e) {
+            const files = e.target.files;
             
-            if (imageUrl) {
-                addImagePreview(imageUrl);
-                document.getElementById('stock-image').value = '';
-            } else {
-                alert('Masukkan URL gambar terlebih dahulu!');
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                
+                if (file.type.match('image.*')) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        // Simpan gambar yang diupload
+                        uploadedImages.push(e.target.result);
+                        
+                        // Tampilkan preview
+                        addImagePreview(e.target.result);
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
             }
+            
+            // Reset input file
+            imageUploadInput.value = '';
         });
 
         // Event listener untuk form tambah stok
@@ -924,17 +966,8 @@
             const price = document.getElementById('stock-price').value;
             const category = document.getElementById('stock-category').value;
             
-            // Ambil semua gambar dari preview
-            const imagePreviews = document.querySelectorAll('.image-preview');
-            const images = [];
-            
-            imagePreviews.forEach(preview => {
-                const imgSrc = preview.querySelector('img').src;
-                images.push(imgSrc);
-            });
-            
-            if (images.length === 0) {
-                alert('Minimal tambahkan satu gambar!');
+            if (uploadedImages.length === 0) {
+                showNotification('Minimal tambahkan satu gambar!', 'error');
                 return;
             }
             
@@ -945,7 +978,7 @@
                 description: description,
                 price: price,
                 category: category,
-                images: images
+                images: [...uploadedImages] // Salin array gambar
             };
             
             stockData.push(newStock);
@@ -956,21 +989,28 @@
             // Reset form
             addStockForm.reset();
             imagePreviewContainer.innerHTML = '';
-            alert('Stok berhasil ditambahkan!');
+            uploadedImages = [];
+            
+            showNotification('Stok berhasil ditambahkan!');
         });
 
         // Fungsi untuk menambahkan preview gambar
-        function addImagePreview(imageUrl) {
+        function addImagePreview(imageData) {
             const imagePreview = document.createElement('div');
             imagePreview.className = 'image-preview';
             imagePreview.innerHTML = `
-                <img src="${imageUrl}" alt="Preview">
+                <img src="${imageData}" alt="Preview">
                 <div class="remove-image">&times;</div>
             `;
             
             // Event listener untuk menghapus gambar
             const removeBtn = imagePreview.querySelector('.remove-image');
             removeBtn.addEventListener('click', function() {
+                // Hapus dari preview dan dari array uploadedImages
+                const index = Array.from(imagePreviewContainer.children).indexOf(imagePreview);
+                if (index !== -1) {
+                    uploadedImages.splice(index, 1);
+                }
                 imagePreview.remove();
             });
             
@@ -1138,7 +1178,7 @@
                 displayStocks();
                 displayAdminStocks();
                 saveToLocalStorage();
-                alert('Stok berhasil dihapus!');
+                showNotification('Stok berhasil dihapus!');
             }
         }
 
@@ -1146,6 +1186,43 @@
         function saveToLocalStorage() {
             localStorage.setItem('stockData', JSON.stringify(stockData));
         }
+
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            
+            if (type === 'error') {
+                notification.style.backgroundColor = '#e74c3c';
+            } else {
+                notification.style.backgroundColor = '#2ecc71';
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Simulasi real-time update (setiap 5 detik)
+        setInterval(function() {
+            // Periksa apakah ada perubahan di localStorage
+            const savedData = localStorage.getItem('stockData');
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                
+                // Jika ada perubahan, update tampilan
+                if (JSON.stringify(parsedData) !== JSON.stringify(stockData)) {
+                    stockData = parsedData;
+                    displayStocks();
+                    
+                    // Jika admin panel aktif, update juga
+                    if (adminStockList.style.display !== 'none') {
+                        displayAdminStocks();
+                    }
+                }
+            }
+        }, 5000);
     </script>
 </body>
 </html>
