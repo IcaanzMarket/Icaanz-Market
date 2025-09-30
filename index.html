@@ -79,45 +79,33 @@
             background-color: var(--accent-color);
         }
 
-        /* Banner Styles */
-        .banner {
-            height: 400px;
-            background-image: url('https://i.supaimg.com/6b0f5aad-850f-4ced-918d-6ee087717f9e.jpg');
-            background-size: cover;
-            background-position: center;
+        /* Category Tabs */
+        .category-tabs {
             display: flex;
-            align-items: center;
             justify-content: center;
-            margin-bottom: 40px;
-            position: relative;
+            margin: 30px 0;
+            border-bottom: 1px solid #eee;
         }
 
-        .banner::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.3);
+        .category-tab {
+            padding: 12px 25px;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
         }
 
-        .banner-content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            color: white;
+        .category-tab.active {
+            color: var(--text-color);
+            border-bottom: 3px solid var(--text-color);
         }
 
-        .banner h1 {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .banner p {
-            font-size: 1.2rem;
-            max-width: 600px;
+        .category-tab:hover {
+            color: var(--text-color);
         }
 
         /* Admin Panel Styles */
@@ -174,7 +162,8 @@
         }
 
         .add-stock-form input,
-        .add-stock-form textarea {
+        .add-stock-form textarea,
+        .add-stock-form select {
             padding: 12px;
             border: 1px solid #ddd;
             border-radius: 4px;
@@ -317,11 +306,37 @@
             color: var(--text-color);
         }
 
+        .stock-category {
+            display: none;
+        }
+
+        .stock-category.active {
+            display: block;
+        }
+
         .stock-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 25px;
             margin-bottom: 50px;
+        }
+
+        @media (max-width: 1100px) {
+            .stock-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stock-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stock-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .stock-item {
@@ -340,7 +355,7 @@
 
         .stock-image-container {
             position: relative;
-            height: 200px;
+            height: 180px;
             width: 100%;
             overflow: hidden;
         }
@@ -365,19 +380,26 @@
         }
 
         .stock-details {
-            padding: 20px;
+            padding: 15px;
         }
 
         .stock-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+        }
+
+        .stock-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-bottom: 8px;
         }
 
         .stock-description {
             color: #666;
-            margin-bottom: 15px;
-            font-size: 0.95rem;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
         }
 
         .contact-admin {
@@ -546,16 +568,13 @@
                 margin: 0 10px;
             }
 
-            .banner h1 {
-                font-size: 2.2rem;
+            .category-tabs {
+                flex-wrap: wrap;
             }
 
-            .banner p {
+            .category-tab {
+                padding: 10px 15px;
                 font-size: 1rem;
-            }
-
-            .stock-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
 
             .admin-stock-item {
@@ -585,13 +604,6 @@
         </div>
     </header>
 
-    <div class="banner">
-        <div class="banner-content">
-            <h1>ICAANZ DA WERTZ</h1>
-            <p>Temukan akun berkualitas dengan harga terbaik</p>
-        </div>
-    </div>
-
     <div class="container">
         <section class="admin-panel" id="admin-panel">
             <h2>Panel Admin</h2>
@@ -602,6 +614,13 @@
             <form class="add-stock-form" id="add-stock-form" style="display: none;">
                 <input type="text" id="stock-title" placeholder="Judul Akun" required>
                 <textarea id="stock-description" placeholder="Deskripsi Akun" rows="4" required></textarea>
+                <input type="text" id="stock-price" placeholder="Harga (contoh: 150K, 2JT)" required>
+                <select id="stock-category" required>
+                    <option value="">Pilih Kategori</option>
+                    <option value="free-fire">Free Fire</option>
+                    <option value="mobile-legend">Mobile Legend</option>
+                    <option value="roblox">Roblox</option>
+                </select>
                 
                 <div class="image-input-group">
                     <input type="url" id="stock-image" placeholder="URL Gambar">
@@ -625,8 +644,29 @@
 
         <section class="stock-section" id="stock-section">
             <h2>Stok Akun Tersedia</h2>
-            <div class="stock-grid" id="stock-grid">
-                <!-- Stok akan ditampilkan di sini -->
+            
+            <div class="category-tabs">
+                <button class="category-tab active" data-category="free-fire">Free Fire</button>
+                <button class="category-tab" data-category="mobile-legend">Mobile Legend</button>
+                <button class="category-tab" data-category="roblox">Roblox</button>
+            </div>
+            
+            <div class="stock-category active" id="free-fire-category">
+                <div class="stock-grid" id="free-fire-stock">
+                    <!-- Stok Free Fire akan ditampilkan di sini -->
+                </div>
+            </div>
+            
+            <div class="stock-category" id="mobile-legend-category">
+                <div class="stock-grid" id="mobile-legend-stock">
+                    <!-- Stok Mobile Legend akan ditampilkan di sini -->
+                </div>
+            </div>
+            
+            <div class="stock-category" id="roblox-category">
+                <div class="stock-grid" id="roblox-stock">
+                    <!-- Stok Roblox akan ditampilkan di sini -->
+                </div>
             </div>
         </section>
     </div>
@@ -660,8 +700,10 @@
         let stockData = JSON.parse(localStorage.getItem('stockData')) || [
             {
                 id: 1,
-                title: "Akun Premium Game A",
-                description: "Akun premium dengan semua fitur unlocked. Level 50 dengan item langka.",
+                title: "Akun Free Fire Legend",
+                description: "Akun FF dengan skin langka dan level maksimal. Dilengkapi dengan 50+ karakter dan item eksklusif.",
+                price: "2.5JT",
+                category: "free-fire",
                 images: [
                     "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
                     "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
@@ -669,20 +711,113 @@
             },
             {
                 id: 2,
-                title: "Akun Streaming B",
-                description: "Akun streaming premium dengan akses ke semua konten eksklusif.",
+                title: "Akun Free Fire Pro",
+                description: "Akun FF dengan 30 skin hero dan rank Mythic. Sudah memiliki semua senjata legendary.",
+                price: "1.8JT",
+                category: "free-fire",
+                images: [
+                    "https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                ]
+            },
+            {
+                id: 3,
+                title: "Akun Free Fire Medium",
+                description: "Akun FF dengan 15 skin dan rank Grandmaster. Sudah memiliki diamond 10K.",
+                price: "750K",
+                category: "free-fire",
+                images: [
+                    "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                ]
+            },
+            {
+                id: 4,
+                title: "Akun Free Fire Basic",
+                description: "Akun FF dengan 5 skin dan rank Epic. Cocok untuk pemula.",
+                price: "350K",
+                category: "free-fire",
+                images: [
+                    "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                ]
+            },
+            {
+                id: 5,
+                title: "Akun ML Legend",
+                description: "Akun Mobile Legend dengan 100+ skin hero dan rank Mythic Glory. Semua emblem max level.",
+                price: "3JT",
+                category: "mobile-legend",
                 images: [
                     "https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
                 ]
             },
             {
-                id: 3,
-                title: "Akun Software C",
-                description: "Akun software lengkap dengan lisensi premium dan update terbaru.",
+                id: 6,
+                title: "Akun ML Pro",
+                description: "Akun ML dengan 50 skin hero dan rank Mythic. Dilengkapi dengan 5 skin collector.",
+                price: "1.5JT",
+                category: "mobile-legend",
+                images: [
+                    "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                ]
+            },
+            {
+                id: 7,
+                title: "Akun ML Medium",
+                description: "Akun ML dengan 20 skin dan rank Legend. Sudah memiliki 30K diamond.",
+                price: "800K",
+                category: "mobile-legend",
+                images: [
+                    "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                ]
+            },
+            {
+                id: 8,
+                title: "Akun ML Basic",
+                description: "Akun ML dengan 10 skin dan rank Epic. Cocok untuk pemula.",
+                price: "400K",
+                category: "mobile-legend",
+                images: [
+                    "https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                ]
+            },
+            {
+                id: 9,
+                title: "Akun Roblox Premium",
+                description: "Akun Roblox dengan 100K robux dan semua game pass. Sudah memiliki limited items langka.",
+                price: "2JT",
+                category: "roblox",
                 images: [
                     "https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-                    "https://images.unsplash.com/photo-1563207153-f403bf289096?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                    "https://images.unsplash.com/photo-1563207153-f403bf289096?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                ]
+            },
+            {
+                id: 10,
+                title: "Akun Roblox Pro",
+                description: "Akun Roblox dengan 50K robux dan 20 game pass. Sudah memiliki beberapa limited items.",
+                price: "1.2JT",
+                category: "roblox",
+                images: [
                     "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                ]
+            },
+            {
+                id: 11,
+                title: "Akun Roblox Medium",
+                description: "Akun Roblox dengan 25K robux dan 10 game pass. Sudah memiliki beberapa item eksklusif.",
+                price: "600K",
+                category: "roblox",
+                images: [
+                    "https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                ]
+            },
+            {
+                id: 12,
+                title: "Akun Roblox Basic",
+                description: "Akun Roblox dengan 10K robux dan 5 game pass. Cocok untuk pemula.",
+                price: "300K",
+                category: "roblox",
+                images: [
+                    "https://images.unsplash.com/photo-1563207153-f403bf289096?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
                 ]
             }
         ];
@@ -692,7 +827,9 @@
         const pinInput = document.getElementById('pin-input');
         const pinSubmit = document.getElementById('pin-submit');
         const addStockForm = document.getElementById('add-stock-form');
-        const stockGrid = document.getElementById('stock-grid');
+        const freeFireStock = document.getElementById('free-fire-stock');
+        const mobileLegendStock = document.getElementById('mobile-legend-stock');
+        const robloxStock = document.getElementById('roblox-stock');
         const imageModal = document.getElementById('image-modal');
         const modalImage = document.getElementById('modal-image');
         const closeModal = document.getElementById('close-modal');
@@ -703,6 +840,8 @@
         const imagePreviewContainer = document.getElementById('image-preview-container');
         const adminStockList = document.getElementById('admin-stock-list');
         const adminStockItems = document.getElementById('admin-stock-items');
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        const stockCategories = document.querySelectorAll('.stock-category');
         const navLinks = document.querySelectorAll('.nav-link');
 
         // Variabel untuk modal gambar
@@ -731,6 +870,21 @@
                         adminPanel.classList.remove('active');
                         targetSection.scrollIntoView({ behavior: 'smooth' });
                     }
+                });
+            });
+
+            // Event listener untuk tab kategori
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    
+                    // Update tab aktif
+                    categoryTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Tampilkan kategori yang dipilih
+                    stockCategories.forEach(cat => cat.classList.remove('active'));
+                    document.getElementById(`${category}-category`).classList.add('active');
                 });
             });
         });
@@ -767,6 +921,8 @@
             
             const title = document.getElementById('stock-title').value;
             const description = document.getElementById('stock-description').value;
+            const price = document.getElementById('stock-price').value;
+            const category = document.getElementById('stock-category').value;
             
             // Ambil semua gambar dari preview
             const imagePreviews = document.querySelectorAll('.image-preview');
@@ -787,6 +943,8 @@
                 id: Date.now(), // ID unik berdasarkan timestamp
                 title: title,
                 description: description,
+                price: price,
+                category: category,
                 images: images
             };
             
@@ -821,9 +979,21 @@
 
         // Fungsi untuk menampilkan stok di halaman publik
         function displayStocks() {
-            stockGrid.innerHTML = '';
+            // Kosongkan semua grid
+            freeFireStock.innerHTML = '';
+            mobileLegendStock.innerHTML = '';
+            robloxStock.innerHTML = '';
             
-            stockData.forEach(stock => {
+            // Urutkan stok berdasarkan harga (dari tertinggi ke terendah)
+            const sortedStockData = [...stockData].sort((a, b) => {
+                // Konversi harga ke angka untuk perbandingan
+                const priceA = convertPriceToNumber(a.price);
+                const priceB = convertPriceToNumber(b.price);
+                return priceB - priceA;
+            });
+            
+            // Tampilkan stok berdasarkan kategori
+            sortedStockData.forEach(stock => {
                 const stockItem = document.createElement('div');
                 stockItem.className = 'stock-item';
                 stockItem.innerHTML = `
@@ -833,6 +1003,7 @@
                     </div>
                     <div class="stock-details">
                         <h3 class="stock-title">${stock.title}</h3>
+                        <div class="stock-price">Rp ${stock.price}</div>
                         <p class="stock-description">${stock.description}</p>
                         <a href="https://wa.me/6283199265399" class="contact-admin" target="_blank">HUBUNGI ADMIN</a>
                     </div>
@@ -844,8 +1015,37 @@
                     openImageModal(stock.images, 0);
                 });
                 
-                stockGrid.appendChild(stockItem);
+                // Tambahkan ke grid yang sesuai
+                if (stock.category === 'free-fire') {
+                    freeFireStock.appendChild(stockItem);
+                } else if (stock.category === 'mobile-legend') {
+                    mobileLegendStock.appendChild(stockItem);
+                } else if (stock.category === 'roblox') {
+                    robloxStock.appendChild(stockItem);
+                }
             });
+        }
+
+        // Fungsi untuk mengonversi harga string ke angka
+        function convertPriceToNumber(priceStr) {
+            // Hapus spasi dan konversi ke huruf kecil
+            let cleanPrice = priceStr.replace(/\s/g, '').toLowerCase();
+            
+            // Jika mengandung "jt" atau "jutaan"
+            if (cleanPrice.includes('jt')) {
+                const num = parseFloat(cleanPrice.replace('jt', '')) * 1000000;
+                return isNaN(num) ? 0 : num;
+            }
+            
+            // Jika mengandung "k" atau "ribu"
+            if (cleanPrice.includes('k')) {
+                const num = parseFloat(cleanPrice.replace('k', '')) * 1000;
+                return isNaN(num) ? 0 : num;
+            }
+            
+            // Jika hanya angka
+            const num = parseFloat(cleanPrice);
+            return isNaN(num) ? 0 : num;
         }
 
         // Fungsi untuk menampilkan stok di panel admin
@@ -857,9 +1057,9 @@
                 adminStockItem.className = 'admin-stock-item';
                 adminStockItem.innerHTML = `
                     <div class="admin-stock-info">
-                        <div class="admin-stock-title">${stock.title}</div>
+                        <div class="admin-stock-title">${stock.title} (${stock.category})</div>
                         <div class="admin-stock-description">${stock.description}</div>
-                        <div class="admin-stock-description">Jumlah Gambar: ${stock.images.length}</div>
+                        <div class="admin-stock-description">Harga: Rp ${stock.price} | Jumlah Gambar: ${stock.images.length}</div>
                     </div>
                     <button class="delete-stock-btn" data-id="${stock.id}">Hapus Stok</button>
                 `;
