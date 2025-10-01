@@ -870,11 +870,14 @@
         // Event listener untuk form tambah stok - FIXED
         addStockForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log("Form submit triggered");
             
             const title = document.getElementById('stock-title').value.trim();
             const description = document.getElementById('stock-description').value.trim();
             const price = document.getElementById('stock-price').value.trim();
             const category = document.getElementById('stock-category').value;
+            
+            console.log("Form data:", { title, description, price, category, uploadedImages });
             
             // Validasi form
             if (!title) {
@@ -916,6 +919,8 @@
                 images: [...uploadedImages] // Salin array gambar
             };
             
+            console.log("New stock:", newStock);
+            
             // Simpan ke localStorage
             stockData.push(newStock);
             saveToLocalStorage();
@@ -930,8 +935,10 @@
             uploadedImages = [];
             
             // Aktifkan kembali tombol
-            submitStockBtn.disabled = false;
-            submitStockBtn.textContent = 'Tambah Stok';
+            setTimeout(() => {
+                submitStockBtn.disabled = false;
+                submitStockBtn.textContent = 'Tambah Stok';
+            }, 1000);
             
             showNotification('Stok berhasil ditambahkan!');
         });
