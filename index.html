@@ -816,6 +816,9 @@
                     document.getElementById(`${category}-category`).classList.add('active');
                 });
             });
+            
+            // Mulai polling untuk update real-time
+            startRealTimePolling();
         });
 
         // Event listener untuk PIN submit
@@ -867,17 +870,14 @@
             imageUploadInput.value = '';
         });
 
-        // Event listener untuk form tambah stok - FIXED
+        // Event listener untuk form tambah stok
         addStockForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            console.log("Form submit triggered");
             
             const title = document.getElementById('stock-title').value.trim();
             const description = document.getElementById('stock-description').value.trim();
             const price = document.getElementById('stock-price').value.trim();
             const category = document.getElementById('stock-category').value;
-            
-            console.log("Form data:", { title, description, price, category, uploadedImages });
             
             // Validasi form
             if (!title) {
@@ -919,11 +919,12 @@
                 images: [...uploadedImages] // Salin array gambar
             };
             
-            console.log("New stock:", newStock);
-            
             // Simpan ke localStorage
             stockData.push(newStock);
             saveToLocalStorage();
+            
+            // Simpan ke cloud storage (simulasi)
+            saveToCloudStorage();
             
             // Update tampilan
             displayStocks();
@@ -1152,6 +1153,7 @@
             if (confirm('Apakah Anda yakin ingin menghapus stok ini?')) {
                 stockData = stockData.filter(stock => stock.id !== stockId);
                 saveToLocalStorage();
+                saveToCloudStorage();
                 displayStocks();
                 displayAdminStocks();
                 showNotification('Stok berhasil dihapus!');
@@ -1161,6 +1163,53 @@
         // Fungsi untuk menyimpan data ke localStorage
         function saveToLocalStorage() {
             localStorage.setItem('stockData', JSON.stringify(stockData));
+        }
+
+        // Fungsi untuk menyimpan data ke cloud storage (simulasi)
+        function saveToCloudStorage() {
+            // Simulasi penyimpanan ke cloud
+            // Dalam implementasi nyata, ini akan menyimpan data ke server/database
+            console.log('Data disimpan ke cloud storage:', stockData);
+            
+            // Simpan ke sessionStorage sebagai simulasi cloud storage
+            // Ini hanya simulasi - dalam implementasi nyata, gunakan API server
+            sessionStorage.setItem('cloudStockData', JSON.stringify(stockData));
+        }
+
+        // Fungsi untuk mengambil data dari cloud storage (simulasi)
+        function loadFromCloudStorage() {
+            // Simulasi pengambilan data dari cloud
+            // Dalam implementasi nyata, ini akan mengambil data dari server/database
+            const cloudData = sessionStorage.getItem('cloudStockData');
+            
+            if (cloudData) {
+                const parsedData = JSON.parse(cloudData);
+                if (JSON.stringify(parsedData) !== JSON.stringify(stockData)) {
+                    stockData = parsedData;
+                    saveToLocalStorage();
+                    displayStocks();
+                    
+                    // Jika admin panel aktif, update juga
+                    if (adminStockList.style.display !== 'none') {
+                        displayAdminStocks();
+                    }
+                    
+                    return true; // Data berubah
+                }
+            }
+            
+            return false; // Data tidak berubah
+        }
+
+        // Fungsi untuk memulai polling real-time
+        function startRealTimePolling() {
+            // Polling setiap 3 detik untuk memeriksa perubahan di cloud storage
+            setInterval(function() {
+                const dataChanged = loadFromCloudStorage();
+                if (dataChanged) {
+                    console.log('Data diperbarui dari cloud storage');
+                }
+            }, 3000);
         }
 
         // Fungsi untuk menampilkan notifikasi
@@ -1179,25 +1228,6 @@
                 notification.classList.remove('show');
             }, 3000);
         }
-
-        // Real-time update dengan polling setiap 2 detik
-        setInterval(function() {
-            const savedData = localStorage.getItem('stockData');
-            if (savedData) {
-                const parsedData = JSON.parse(savedData);
-                
-                // Jika ada perubahan, update tampilan
-                if (JSON.stringify(parsedData) !== JSON.stringify(stockData)) {
-                    stockData = parsedData;
-                    displayStocks();
-                    
-                    // Jika admin panel aktif, update juga
-                    if (adminStockList.style.display !== 'none') {
-                        displayAdminStocks();
-                    }
-                }
-            }
-        }, 2000);
     </script>
 </body>
 </html>
